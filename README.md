@@ -1,7 +1,7 @@
 jSEPA
 =====
 
-A java library mainly to create valid pain.008.003.02 / v2.7 SEPA XML documents
+A java library mainly to create valid pain.008.003.02 / v2.7 SEPA XML documents using CORE and COR1 schemes. B2B is not yet supported as constraints are unknown.
 
 Relies on obantoo for IBAN validation for now which will be removed in future releases.
 
