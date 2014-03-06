@@ -30,10 +30,10 @@ public String createSepaXml(InvoiceBatch batch) {
 }
 
 private DirectDebitDocument initDirectDebitDocument(InvoiceBatch batch) throws SepaValidationException {
-    Association payee = batch.getPayee();
-    BankData payeeBankData = payee.getInvoicingData().getBankData();
     DirectDebitDocument result = new DirectDebitDocument();
-    result.setDocumentMessageId(batch.getId().toString()); // Z. B. Buchungslaufnummer
+
+    BankData payeeBankData = batch.getPayee().getInvoicingData().getBankData();
+    result.setDocumentMessageId(batch.getId().toString());
     result.setCreditorBic(payeeBankData.getBic());
     result.setCreditorIban(payeeBankData.getIban());
     result.setCreditorName(payee.getName());
@@ -41,6 +41,19 @@ private DirectDebitDocument initDirectDebitDocument(InvoiceBatch batch) throws S
     applySepaDirectDebitSchemeFromPayee(payee, result);
 
     return result;
+}
+
+private void applySepaDirectDebitSchemeFromPayee(Association payee, DirectDebitDocument ddd) {
+    switch (payee.getInvoicingData().getDirectDebitScheme()) {
+        case SEPA_COR1:
+            ddd.setDirectDebitType(DirectDebitType.COR1);
+            break;
+        case SEPA_CORE:
+            ddd.setDirectDebitType(DirectDebitType.CORE);
+            break;
+        default:
+            throw new NotYetImplementedException("Unknown SEPA Scheme " + payee.getInvoicingData().getDirectDebitScheme());
+    }
 }
 
 private void addInvoiceToDirectDebitDocument(DirectDebitDocument ddd, Invoice i) throws SepaValidationException {
