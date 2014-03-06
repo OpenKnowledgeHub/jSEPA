@@ -19,10 +19,7 @@ public String createSepaXml(InvoiceBatch batch) {
             addInvoiceToDirectDebitDocument(ddd, i);
         }
 
-        response.setContentType("text/plain;charset=DIN-66003");
-        response.setHeader("Content-Disposition", "attachment; filename=\"SEPA-" + invoiceBatchId + ".xml\"");
-
-        response.getOutputStream().print(ddd.toXml());
+        return ddd.toXml();
     } catch (SepaValidationException | DatatypeConfigurationException e) {
         response.sendError(500, e.getMessage());
         LOG.log(Level.SEVERE, "Could not create SEPA document", e);
