@@ -42,7 +42,6 @@ public class DirectDebitDocumentBuilderTest {
      */
     @Test
     public void testToXml() throws DatatypeConfigurationException, SepaValidationException {
-        System.out.println("toXml");
         DirectDebitDocument ddd = new DirectDebitDocument("MALADE51NWD", "DE89370400440532013000", "DE98ZZZ09999999999", "Hans Mustermann", "12345", DirectDebitType.COR1);
 
         Calendar dueDate = Calendar.getInstance();
@@ -56,12 +55,13 @@ public class DirectDebitDocumentBuilderTest {
             ddd.addPayment(createTestPayment(mt, 99.99f, "Arme Wurst2", "MALADE51NWD", "DE89370400440532013000", dueDate));
         }
 
-        String expResult = "";
         String result = DirectDebitDocumentBuilder.toXml(ddd);
+        // TODO: write proper tests
         System.out.println(result);
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        assertTrue(result.contains("DE98ZZZ09999999999"));
+        assertTrue(result.contains("DE89370400440532013000"));
+        assertTrue(result.contains("Arme Wurst2".toUpperCase()));
+        assertTrue(result.contains("Hans Mustermann".toUpperCase()));
     }
 
     private DirectDebitPayment createTestPayment(MandateType mt, float sum, String debitorName, String bic, String iban, Calendar dueDate) throws SepaValidationException {
