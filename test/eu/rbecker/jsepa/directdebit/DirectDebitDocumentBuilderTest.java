@@ -42,7 +42,7 @@ public class DirectDebitDocumentBuilderTest {
      */
     @Test
     public void testToXml() throws DatatypeConfigurationException, SepaValidationException {
-        DirectDebitDocument ddd = new DirectDebitDocument("MALADE51NWD", "DE89370400440532013000", "DE98ZZZ09999999999", "Hans Mustermann", "12345", DirectDebitType.COR1);
+        DirectDebitDocument ddd = new DirectDebitDocument("MALADE51NWD", "DE89370400440532013000", "DE98ZZZ09999999999", "Hans Mustermann", "12345");
 
         Calendar dueDate = Calendar.getInstance();
         dueDate.set(Calendar.HOUR, 0);

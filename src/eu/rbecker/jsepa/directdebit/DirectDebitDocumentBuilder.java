@@ -3,37 +3,37 @@
  */
 package eu.rbecker.jsepa.directdebit;
 
-import eu.rbecker.jsepa.directdebit.xml.schema.AccountIdentificationSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.ActiveOrHistoricCurrencyAndAmountSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.ActiveOrHistoricCurrencyCodeEUR;
-import eu.rbecker.jsepa.directdebit.xml.schema.BranchAndFinancialInstitutionIdentificationSEPA3;
-import eu.rbecker.jsepa.directdebit.xml.schema.CashAccountSEPA1;
-import eu.rbecker.jsepa.directdebit.xml.schema.CashAccountSEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.ChargeBearerTypeSEPACode;
-import eu.rbecker.jsepa.directdebit.xml.schema.CustomerDirectDebitInitiationV02;
-import eu.rbecker.jsepa.directdebit.xml.schema.DirectDebitTransactionInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.DirectDebitTransactionSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.Document;
-import eu.rbecker.jsepa.directdebit.xml.schema.FinancialInstitutionIdentificationSEPA3;
-import eu.rbecker.jsepa.directdebit.xml.schema.GroupHeaderSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.IdentificationSchemeNameSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.LocalInstrumentSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.MandateRelatedInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.ObjectFactory;
-import eu.rbecker.jsepa.directdebit.xml.schema.PartyIdentificationSEPA1;
-import eu.rbecker.jsepa.directdebit.xml.schema.PartyIdentificationSEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.PartyIdentificationSEPA3;
-import eu.rbecker.jsepa.directdebit.xml.schema.PartyIdentificationSEPA5;
-import eu.rbecker.jsepa.directdebit.xml.schema.PartySEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.PaymentIdentificationSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.PaymentInstructionInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.PaymentMethod2Code;
-import eu.rbecker.jsepa.directdebit.xml.schema.PaymentTypeInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.PersonIdentificationSEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.RemittanceInformationSEPA1Choice;
-import eu.rbecker.jsepa.directdebit.xml.schema.RestrictedPersonIdentificationSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.RestrictedPersonIdentificationSchemeNameSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.ServiceLevelSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.AccountIdentificationSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ActiveOrHistoricCurrencyAndAmountSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ActiveOrHistoricCurrencyCodeEUR;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.BranchAndFinancialInstitutionIdentificationSEPA3;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.CashAccountSEPA1;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.CashAccountSEPA2;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ChargeBearerTypeSEPACode;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.CustomerDirectDebitInitiationV02;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.DirectDebitTransactionInformationSDD;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.DirectDebitTransactionSDD;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.Document;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.FinancialInstitutionIdentificationSEPA3;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.GroupHeaderSDD;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.IdentificationSchemeNameSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.LocalInstrumentSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.MandateRelatedInformationSDD;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ObjectFactory;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA1;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA2;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA3;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA5;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartySEPA2;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentIdentificationSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentInstructionInformationSDD;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentMethod2Code;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentTypeInformationSDD;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PersonIdentificationSEPA2;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RemittanceInformationSEPA1Choice;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RestrictedPersonIdentificationSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RestrictedPersonIdentificationSchemeNameSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ServiceLevelSEPA;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ class DirectDebitDocumentBuilder {
         // control sum
         result.setCtrlSum(floatToBigInt2Digit(ddd.getTotalPaymentSumOfPaymentsByMandateType(mandateType)));
         // payment type information
-        result.setPmtTpInf(createPaymentTypeInformation(ddd.getDirectDebitType(), mandateType));
+        result.setPmtTpInf(createPaymentTypeInformation(mandateType));
 
         // requested collection due date
         result.setReqdColltnDt(dateToXmlGregorianCalendarDate(ddd.getDueDateByMandateType(mandateType)));
@@ -203,12 +203,12 @@ class DirectDebitDocumentBuilder {
         return result;
     }
 
-    private static PaymentTypeInformationSDD createPaymentTypeInformation(DirectDebitType directDebitType, MandateType mandateType) {
+    private static PaymentTypeInformationSDD createPaymentTypeInformation(MandateType mandateType) {
         PaymentTypeInformationSDD paymentType = new PaymentTypeInformationSDD();
         paymentType.setSvcLvl(new ServiceLevelSEPA());
         paymentType.getSvcLvl().setCd("SEPA");
         paymentType.setLclInstrm(new LocalInstrumentSEPA());
-        paymentType.getLclInstrm().setCd(directDebitType.getSepaXmlString());
+        paymentType.getLclInstrm().setCd("CORE");
         paymentType.setSeqTp(mandateType.getSepaSequenceType1Code());
         return paymentType;
     }

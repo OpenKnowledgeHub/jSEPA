@@ -11,19 +11,33 @@
     <target name="jaxb-code-generation" depends="xjc-typedef-target,-do-init,-init-macrodef-javac">
         <mkdir dir="${build.generated.sources.dir}/jaxb" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
         <mkdir dir="build/generated/jaxbCache" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
-        <mkdir dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding"/>
-        <xjc package="eu.rbecker.jsepa.directdebit.xml.schema" destdir="build/generated/jaxbCache/SepaDirectDebitXmlBinding" catalog="catalog.xml">
+        <mkdir dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800302"/>
+        <xjc package="eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02" destdir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800302" catalog="catalog.xml">
             <classpath>
                 <pathelement location="${src.dir}"/>
                 <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
             </classpath>
             <arg value="-xmlschema"/>
-            <schema file="xml-resources/jaxb/SepaDirectDebitXmlBinding/pain.008.003.02.xsd"/>
-            <depends file="xml-resources/jaxb/SepaDirectDebitXmlBinding/pain.008.003.02.xsd"/>
-            <produces dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding"/>
+            <schema file="xml-resources/jaxb/SepaDirectDebitXmlBinding00800302/pain.008.003.02.xsd"/>
+            <depends file="xml-resources/jaxb/SepaDirectDebitXmlBinding00800302/pain.008.003.02.xsd"/>
+            <produces dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800302"/>
         </xjc>
         <copy todir="${build.generated.sources.dir}/jaxb">
-            <fileset dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding"/>
+            <fileset dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800302"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800102"/>
+        <xjc package="eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02" destdir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800102" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="xml-resources/jaxb/SepaDirectDebitXmlBinding00800102/pain.008.001.02.xsd"/>
+            <depends file="xml-resources/jaxb/SepaDirectDebitXmlBinding00800102/pain.008.001.02.xsd"/>
+            <produces dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800102"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/SepaDirectDebitXmlBinding00800102"/>
         </copy>
     </target>
 </project>

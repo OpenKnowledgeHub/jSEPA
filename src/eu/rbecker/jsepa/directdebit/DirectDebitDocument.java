@@ -26,8 +26,6 @@ public class DirectDebitDocument {
 
     private final List<DirectDebitPayment> payments = new ArrayList<>();
 
-    private DirectDebitType directDebitType;
-
     public String toXml() throws DatatypeConfigurationException {
         return DirectDebitDocumentBuilder.toXml(this);
     }
@@ -35,7 +33,7 @@ public class DirectDebitDocument {
     public DirectDebitDocument() {
     }
     
-    public DirectDebitDocument(String creditorBic, String creditorIban, String creditorCreditorIdentifier, String creditorName, String documentMessageId, DirectDebitType directDebitType) throws SepaValidationException {
+    public DirectDebitDocument(String creditorBic, String creditorIban, String creditorCreditorIdentifier, String creditorName, String documentMessageId) throws SepaValidationException {
         SepaUtil.validateBic(creditorBic);
         SepaUtil.validateIban(creditorIban);
         SepaUtil.validateCreditorIdentifier(creditorIdentifier);
@@ -44,7 +42,6 @@ public class DirectDebitDocument {
         this.creditorIdentifier = creditorCreditorIdentifier;
         this.creditorName = Zeichen.convert(creditorName);
         this.documentMessageId = documentMessageId;
-        this.directDebitType = directDebitType;
     }
 
     /**
@@ -157,13 +154,4 @@ public class DirectDebitDocument {
     public List<DirectDebitPayment> getPayments() {
         return payments;
     }
-
-    public DirectDebitType getDirectDebitType() {
-        return directDebitType;
-    }
-
-    public void setDirectDebitType(DirectDebitType directDebitType) {
-        this.directDebitType = directDebitType;
-    }
-
 }

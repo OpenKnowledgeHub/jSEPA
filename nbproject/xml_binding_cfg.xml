@@ -1,10 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <schemas xmlns='http://xml.netbeans.org/schema/JAXBWizConfig' destdir='build/generated-sources/jaxb' projectName='jSEPA' version='1.0'>
-	<schema type='-xmlschema' package='eu.rbecker.jsepa.directdebit.xml.schema' name='SepaDirectDebitXmlBinding'>
+	<schema type='-xmlschema' package='eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02' name='SepaDirectDebitXmlBinding00800302'>
 		<xjc-options>
 		</xjc-options>
 		<schema-sources>
-			<schema-source location='xml-resources/jaxb/SepaDirectDebitXmlBinding/pain.008.003.02.xsd' origLocation='../../Downloads/pain.008.003.02.xsd'/>
+			<schema-source location='xml-resources/jaxb/SepaDirectDebitXmlBinding00800302/pain.008.003.02.xsd' origLocation='../../Downloads/pain.008.003.02.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02' name='SepaDirectDebitXmlBinding00800102'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='xml-resources/jaxb/SepaDirectDebitXmlBinding00800102/pain.008.001.02.xsd' origLocation='../../Downloads/pain.008.001.02.xsd'/>
 		</schema-sources>
 		<bindings>
 		</bindings>
