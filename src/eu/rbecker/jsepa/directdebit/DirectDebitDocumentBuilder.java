@@ -34,8 +34,8 @@ import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RemittanceInforma
 import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RestrictedPersonIdentificationSEPA;
 import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RestrictedPersonIdentificationSchemeNameSEPA;
 import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ServiceLevelSEPA;
+import eu.rbecker.jsepa.sepa.SepaUtil;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -97,7 +97,7 @@ class DirectDebitDocumentBuilder {
         // number of transactions
         result.setNbOfTxs(String.valueOf(ddd.getNumberOfPaymentsByMandateType(mandateType)));
         // control sum
-        result.setCtrlSum(floatToBigInt2Digit(ddd.getTotalPaymentSumOfPaymentsByMandateType(mandateType)));
+        result.setCtrlSum(ddd.getTotalPaymentSumOfPaymentsByMandateType(mandateType));
         // payment type information
         result.setPmtTpInf(createPaymentTypeInformation(mandateType));
 
@@ -149,7 +149,7 @@ class DirectDebitDocumentBuilder {
         // currency and amount
         result.setInstdAmt(new ActiveOrHistoricCurrencyAndAmountSEPA());
         result.getInstdAmt().setCcy(ActiveOrHistoricCurrencyCodeEUR.EUR);
-        result.getInstdAmt().setValue(floatToBigInt2Digit(p.getPaymentSum()));
+        result.getInstdAmt().setValue(p.getPaymentSum());
 
         // transaction information
         result.setDrctDbtTx(createDirectDebitTransaction(p, ddd));
@@ -213,10 +213,6 @@ class DirectDebitDocumentBuilder {
         return paymentType;
     }
 
-    private static BigDecimal floatToBigInt2Digit(float f) {
-        return new BigDecimal(f).setScale(2, BigDecimal.ROUND_HALF_UP);
-    }
-    
     private static XMLGregorianCalendar dateToXmlGregorianCalendarDateTime(Date d) throws DatatypeConfigurationException {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(d);
@@ -264,7 +260,7 @@ class DirectDebitDocumentBuilder {
         result.setNbOfTxs(String.valueOf(ddd.getPayments().size()));
 
         // control sum
-        result.setCtrlSum(floatToBigInt2Digit(ddd.getTotalPaymentSum()));
+        result.setCtrlSum(ddd.getTotalPaymentSum());
 
         // creditor name
         PartyIdentificationSEPA1 partyIdentificationSEPA1 = new PartyIdentificationSEPA1();

@@ -7,6 +7,7 @@ import de.jost_net.OBanToo.SEPA.BIC;
 import de.jost_net.OBanToo.SEPA.IBAN;
 import de.jost_net.OBanToo.SEPA.SEPAException;
 import eu.rbecker.jsepa.directdebit.SepaValidationException;
+import java.math.BigDecimal;
 
 /**
  *
@@ -37,5 +38,9 @@ public class SepaUtil {
 
     public static void validateCreditorIdentifier(String creditorIdentifier) throws SepaValidationException {
         // TODO: implement
+    }
+    
+    public static BigDecimal floatToBigInt2Digit(float f) {
+        return new BigDecimal(f).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }

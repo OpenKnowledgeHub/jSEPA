@@ -8,6 +8,7 @@ import de.jost_net.OBanToo.SEPA.IBAN;
 import de.jost_net.OBanToo.SEPA.SEPAException;
 import de.jost_net.OBanToo.StringLatin.Zeichen;
 import eu.rbecker.jsepa.sepa.SepaUtil;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
  */
 public class DirectDebitPayment {
 
-    private float paymentSum;
+    private BigDecimal paymentSum;
 
     private String debitorIban;
 
@@ -40,12 +41,16 @@ public class DirectDebitPayment {
         }
     }
 
-    public float getPaymentSum() {
+    public BigDecimal getPaymentSum() {
         return paymentSum;
     }
 
     public void setPaymentSum(float paymentSum) {
-        this.paymentSum = paymentSum;
+        this.paymentSum = SepaUtil.floatToBigInt2Digit(paymentSum);
+    }
+    
+    public void setPaymentSum(BigDecimal paymentSum) {
+        this.paymentSum = paymentSum.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public String getDebitorIban() {

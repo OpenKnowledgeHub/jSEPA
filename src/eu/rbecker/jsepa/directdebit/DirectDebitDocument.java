@@ -2,6 +2,8 @@ package eu.rbecker.jsepa.directdebit;
 
 import de.jost_net.OBanToo.StringLatin.Zeichen;
 import eu.rbecker.jsepa.sepa.SepaUtil;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,10 +70,10 @@ public class DirectDebitDocument {
         return result;
     }
 
-    public float getTotalPaymentSumOfPaymentsByMandateType(MandateType mt) {
-        float result = 0;
+    public BigDecimal getTotalPaymentSumOfPaymentsByMandateType(MandateType mt) {
+        BigDecimal result = new BigDecimal(0).setScale(2, RoundingMode.HALF_UP);
         for (DirectDebitPayment p : getPaymentsByMandateType(mt)) {
-            result += p.getPaymentSum();
+            result = result.add(p.getPaymentSum());
         }
         return result;
     }
@@ -95,10 +97,10 @@ public class DirectDebitDocument {
         return result;
     }
 
-    public float getTotalPaymentSum() {
-        float result = 0;
+    public BigDecimal getTotalPaymentSum() {
+        BigDecimal result = new BigDecimal(0).setScale(2, RoundingMode.HALF_UP);
         for (DirectDebitPayment p : payments) {
-            result += p.getPaymentSum();
+            result = result.add(p.getPaymentSum());
         }
         return result;
     }

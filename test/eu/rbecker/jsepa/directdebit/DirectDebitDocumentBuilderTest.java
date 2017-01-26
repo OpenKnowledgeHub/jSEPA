@@ -51,13 +51,16 @@ public class DirectDebitDocumentBuilderTest {
         dueDate.add(Calendar.DATE, 14);
 
         for (MandateType mt : MandateType.values()) {
-            ddd.addPayment(createTestPayment(mt, 123.45f, "Arme Wurst", "MALADE51NWD", "DE89370400440532013000", dueDate));
-            ddd.addPayment(createTestPayment(mt, 99.99f, "Arme Wurst2", "MALADE51NWD", "DE89370400440532013000", dueDate));
+            ddd.addPayment(createTestPayment(mt, 123.4539f, "Arme Wurst", "MALADE51NWD", "DE89370400440532013000", dueDate));
+            ddd.addPayment(createTestPayment(mt, 99.9930f, "Arme Wurst2", "MALADE51NWD", "DE89370400440532013000", dueDate));
         }
 
         String result = DirectDebitDocumentBuilder.toXml(ddd);
         // TODO: write proper tests
         System.out.println(result);
+        assertTrue(result.contains("<InstdAmt Ccy=\"EUR\">123.45</InstdAmt>"));
+        assertTrue(result.contains("<InstdAmt Ccy=\"EUR\">99.99</InstdAmt>"));
+        assertTrue(result.contains("<CtrlSum>893.76</CtrlSum>"));
         assertTrue(result.contains("DE98ZZZ09999999999"));
         assertTrue(result.contains("DE89370400440532013000"));
         assertTrue(result.contains("Arme Wurst2".toUpperCase()));
