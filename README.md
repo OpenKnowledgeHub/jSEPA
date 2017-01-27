@@ -1,10 +1,36 @@
 # jSEPA
 
-A java library to create valid pain.008.003.02 / v2.7 SEPA XML documents using CORE.
+A java library to create valid pain.008.003.02 / v2.7 SEPA direct debit XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
 
-The library is in an early stage but already used in production.
+Both types of documents as created by the internal unit tests have been validated with Star Finanz SEPA XML Checker.
 
-Includes IBAN validation by apache commons and a regular expression check for BICs. Strings are sanitized according to SEPA rules.
+Includes IBAN validation by apache commons and a regular expression based validation for BICs. Strings are sanitized according to SEPA rules.
+
+There is no national bank database lookup for IBAN and BIC validation, as that caused more harm than good in the past.
+
+## License
+
+The MIT License
+
+Copyright 2017 Robert Becker <robert at rbecker.eu>.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ## Usage
 
@@ -65,7 +91,6 @@ private void addInvoiceToDirectDebitDocument(DirectDebitDocumentData ddd, Invoic
     ddd.addPayment(result);
 }
 ```
-
 
 ## Compiling
 
