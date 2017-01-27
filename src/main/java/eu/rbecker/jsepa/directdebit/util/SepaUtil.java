@@ -1,9 +1,8 @@
 /*
  *  All rights reserved.
  */
-package eu.rbecker.jsepa.sepa;
+package eu.rbecker.jsepa.directdebit.util;
 
-import eu.rbecker.jsepa.directdebit.SepaValidationException;
 import eu.rbecker.jsepa.sepa.validation.BicValidator;
 import java.math.BigDecimal;
 import org.apache.commons.validator.routines.IBANValidator;

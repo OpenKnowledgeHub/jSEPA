@@ -12,7 +12,7 @@ Includes IBAN validation by apache commons and a regular expression check for BI
 ```java
 public String createSepaXml(InvoiceBatch batch) {
     try {
-        DirectDebitDocument ddd = initDirectDebitDocument(batch);
+        DirectDebitDocumentData ddd = initDirectDebitDocument(batch);
 
         for (Invoice i : batch.getInvoices()) {
             addInvoiceToDirectDebitDocument(ddd, i);
@@ -25,8 +25,8 @@ public String createSepaXml(InvoiceBatch batch) {
     }
 }
 
-private DirectDebitDocument initDirectDebitDocument(InvoiceBatch batch) throws SepaValidationException {
-    DirectDebitDocument result = new DirectDebitDocument();
+private DirectDebitDocumentData initDirectDebitDocument(InvoiceBatch batch) throws SepaValidationException {
+    DirectDebitDocumentData result = new DirectDebitDocument();
 
     BankData payeeBankData = batch.getPayee().getInvoicingData().getBankData();
     result.setDocumentMessageId(batch.getId().toString());
@@ -34,25 +34,11 @@ private DirectDebitDocument initDirectDebitDocument(InvoiceBatch batch) throws S
     result.setCreditorIban(payeeBankData.getIban());
     result.setCreditorName(payee.getName());
     result.setCreditorIdentifier(payee.getInvoicingData().getCreditorIdentifier());
-    applySepaDirectDebitSchemeFromPayee(payee, result);
 
     return result;
 }
 
-private void applySepaDirectDebitSchemeFromPayee(Association payee, DirectDebitDocument ddd) {
-    switch (payee.getInvoicingData().getDirectDebitScheme()) {
-        case SEPA_COR1:
-            ddd.setDirectDebitType(DirectDebitType.COR1);
-            break;
-        case SEPA_CORE:
-            ddd.setDirectDebitType(DirectDebitType.CORE);
-            break;
-        default:
-            throw new NotYetImplementedException("Unknown SEPA Scheme " + payee.getInvoicingData().getDirectDebitScheme());
-    }
-}
-
-private void addInvoiceToDirectDebitDocument(DirectDebitDocument ddd, Invoice i) throws SepaValidationException {
+private void addInvoiceToDirectDebitDocument(DirectDebitDocumentData ddd, Invoice i) throws SepaValidationException {
     DirectDebitPayment result = new DirectDebitPayment();
     BankData bd = i.getRecipientBankData();
     result.setPaymentSum(i.getAfterTaxTotal());

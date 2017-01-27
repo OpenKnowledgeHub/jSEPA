@@ -3,6 +3,7 @@
  */
 package eu.rbecker.jsepa.directdebit;
 
+import eu.rbecker.jsepa.directdebit.util.SepaValidationException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -22,28 +23,12 @@ public class DirectDebitDocumentBuilderTest {
     public DirectDebitDocumentBuilderTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of toXml method, of class DirectDebitDocumentBuilder.
      */
     @Test
     public void testToXml() throws DatatypeConfigurationException, SepaValidationException {
-        DirectDebitDocument ddd = new DirectDebitDocument("MALADE51NWD", "DE89370400440532013000", "DE98ZZZ09999999999", "Hans Mustermann", "12345");
+        DirectDebitDocumentData ddd = new DirectDebitDocumentData("MALADE51NWD", "DE89370400440532013000", "DE98ZZZ09999999999", "Hans Mustermann", "12345");
 
         Calendar dueDate = Calendar.getInstance();
         dueDate.set(Calendar.HOUR, 0);
@@ -58,7 +43,7 @@ public class DirectDebitDocumentBuilderTest {
         ddd.addPayment(createTestPayment(MandateType.RECURRENT, "10", "Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Name", "MALADE51NWD", "DE89370400440532013000", dueDate));
 
         String result = DirectDebitDocumentBuilder.toXml(ddd);
-        //System.out.println(result);
+        System.out.println(result);
         assertTrue(result.contains("<InstdAmt Ccy=\"EUR\">123.45</InstdAmt>"));
         assertTrue(result.contains("<InstdAmt Ccy=\"EUR\">99.99</InstdAmt>"));
         assertTrue(result.contains("<CtrlSum>903.76</CtrlSum>"));

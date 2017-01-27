@@ -1,7 +1,8 @@
 package eu.rbecker.jsepa.directdebit;
 
+import eu.rbecker.jsepa.directdebit.util.SepaValidationException;
 import eu.rbecker.jsepa.sanitization.SepaStringSanitizer;
-import eu.rbecker.jsepa.sepa.SepaUtil;
+import eu.rbecker.jsepa.directdebit.util.SepaUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
  *
  * @author Robert Becker
  */
-public class DirectDebitDocument {
+public class DirectDebitDocumentData {
 
     private String creditorBic;
 
@@ -32,10 +33,10 @@ public class DirectDebitDocument {
         return DirectDebitDocumentBuilder.toXml(this);
     }
 
-    public DirectDebitDocument() {
+    public DirectDebitDocumentData() {
     }
     
-    public DirectDebitDocument(String creditorBic, String creditorIban, String creditorCreditorIdentifier, String creditorName, String documentMessageId) throws SepaValidationException {
+    public DirectDebitDocumentData(String creditorBic, String creditorIban, String creditorCreditorIdentifier, String creditorName, String documentMessageId) throws SepaValidationException {
         setCreditorBic(creditorBic);
         setCreditorIban(creditorIban);
         setCreditorIdentifier(creditorCreditorIdentifier);

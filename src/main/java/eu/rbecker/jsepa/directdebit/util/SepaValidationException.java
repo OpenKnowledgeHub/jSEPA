@@ -2,7 +2,7 @@
  *  All rights reserved.
  */
 
-package eu.rbecker.jsepa.directdebit;
+package eu.rbecker.jsepa.directdebit.util;
 
 /**
  *
