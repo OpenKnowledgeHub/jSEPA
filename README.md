@@ -1,13 +1,14 @@
-jSEPA
-=====
+# jSEPA
 
-A java library mainly to create valid pain.008.003.02 / v2.7 SEPA XML documents using CORE and COR1 schemes. B2B is not yet supported as constraints are unknown.
+A java library to create valid pain.008.003.02 / v2.7 SEPA XML documents using CORE.
 
 The library is in an early stage but already used in production.
 
-Here is a short mainly undocumented code example on how to use this. InvoiceBatch and Invoice classes are not included in jSEPA but the intention should be clear. More detailed documentation is comming soon.
-
 Includes IBAN validation by apache commons and a regular expression check for BICs. Strings are sanitized according to SEPA rules.
+
+## Usage
+
+Here is a short mainly undocumented code example on how to use this. InvoiceBatch and Invoice classes are not included in jSEPA but the intention should be clear. More detailed documentation is comming soon.
 
 ```java
 public String createSepaXml(InvoiceBatch batch) {
@@ -66,7 +67,6 @@ private void addInvoiceToDirectDebitDocument(DirectDebitDocumentData ddd, Invoic
 ```
 
 
-Compiling
-=====
+## Compiling
 
 Just checkout the repository and run `mvn clean install`. A `.jar` file will be created in the `target/` directory.
