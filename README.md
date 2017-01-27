@@ -1,6 +1,6 @@
 # jSEPA
 
-A java library mainly to create valid pain.008.003.02 / v2.7 SEPA XML documents using CORE. B2B is not yet supported as constraints are unknown.
+A java library to create valid pain.008.003.02 / v2.7 SEPA XML documents using CORE.
 
 The library is in an early stage but already used in production.
 
