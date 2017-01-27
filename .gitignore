@@ -1,0 +1,5 @@
+/target/
+/nbproject/
+/build/
+/dist/
+.DS_STORE

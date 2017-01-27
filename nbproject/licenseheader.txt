@@ -1,7 +1,0 @@
-<#if licenseFirst??>
-${licenseFirst}
-</#if>
-${licensePrefix} All rights reserved.
-<#if licenseLast??>
-${licenseLast}
-</#if>
