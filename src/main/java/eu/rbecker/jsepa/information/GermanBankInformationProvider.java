@@ -23,14 +23,12 @@
  */
 package eu.rbecker.jsepa.information;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -66,12 +64,16 @@ public class GermanBankInformationProvider implements BankInformationProvider {
     
     @Override
     public List<BankInformation> provide() {
-        List<BankInformation> result = new ArrayList<>();
-        for (String l : readDataFile()) {
-            BankInformation bi = parseLine(l);
-            result.add(bi);
+        try (InputStream in = this.getClass().getResourceAsStream("/" + BANK_DATA_FILE_NAME)) {
+            return new BufferedReader(new InputStreamReader(in))
+                .lines()
+                .map(l -> parseLine(l))
+                .collect(Collectors.toList());
+        } catch (IOException ex) {
+            // If this crashes, the library (build) is broken.
+            throw new RuntimeException(ex);
         }
-        return result;
+        
     }
 
     private BankInformation parseLine(String l) {
@@ -81,18 +83,6 @@ public class GermanBankInformationProvider implements BankInformationProvider {
         String bic = l.substring(139, 150);
         BankInformation bi = new BankInformation(name, shortName, code, bic);
         return bi;
-    }
-
-    private List<String> readDataFile() throws RuntimeException {
-        List<String> lines;
-        try {
-            URI uri = this.getClass().getResource("/" + BANK_DATA_FILE_NAME).toURI();
-            lines = Files.readAllLines(Paths.get(uri), StandardCharsets.UTF_8);
-        } catch (IOException | URISyntaxException ex) {
-            // If this crashes, the library (build) is broken.
-            throw new RuntimeException(ex);
-        }
-        return lines;
     }
 
 }
