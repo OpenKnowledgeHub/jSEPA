@@ -2,4 +2,5 @@
 /nbproject/
 /build/
 /dist/
+/src/main/resources/bankdata.*
 .DS_STORE

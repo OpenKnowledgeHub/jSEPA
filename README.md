@@ -8,6 +8,8 @@ Includes IBAN validation by apache commons and a regular expression based valida
 
 There is no national bank database lookup for IBAN and BIC validation, as that caused more harm than good in the past.
 
+Provides IBAN/BIC based bank information lookup for german banks using data provided by the Bundesbank. This also enables IBAN to BIC conversation.
+
 ## License
 
 The MIT License
@@ -95,3 +97,6 @@ private void addInvoiceToDirectDebitDocument(DirectDebitDocumentData ddd, Invoic
 ## Compiling
 
 Just checkout the repository and run `mvn clean install`. A `.jar` file will be created in the `target/` directory.
+
+The maven build script automatically downloads a text file from the Bundesbank containing bank information data to enable IBAN to BIC transformation.
+The file will only be downloaded when it is missing or older than a week. 

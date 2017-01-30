@@ -43,7 +43,7 @@ public class DirectDebitDocumentBuilderTest {
         ddd.addPayment(createTestPayment(MandateType.RECURRENT, "10", "Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Name", "MALADE51NWD", "DE89370400440532013000", dueDate));
 
         String result = DirectDebitDocumentBuilder.toXml(ddd);
-        System.out.println(result);
+//        System.out.println(result);
         assertTrue(result.contains("<InstdAmt Ccy=\"EUR\">123.45</InstdAmt>"));
         assertTrue(result.contains("<InstdAmt Ccy=\"EUR\">99.99</InstdAmt>"));
         assertTrue(result.contains("<CtrlSum>903.76</CtrlSum>"));
@@ -51,7 +51,7 @@ public class DirectDebitDocumentBuilderTest {
         assertTrue(result.contains("DE89370400440532013000"));
         assertTrue(result.contains("Arme Wurst2"));
         assertTrue(result.contains("Hans Mustermann"));
-        assertTrue(result.contains("test-Überweisung"));
+        assertTrue(result.contains("test-_berweisung"));
         assertTrue(result.contains("Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong "));
         assertFalse(result.contains("Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong N"));
     }
