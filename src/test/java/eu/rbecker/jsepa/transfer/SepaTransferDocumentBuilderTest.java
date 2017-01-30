@@ -47,7 +47,7 @@ public class SepaTransferDocumentBuilderTest {
         assertTrue(result.contains("DE89370400440532013000"));
         assertTrue(result.contains("Arme Wurst2"));
         assertTrue(result.contains("Hans Mustermann"));
-        assertTrue(result.contains("test-_berweisung"));
+        assertTrue(result.contains("test- berweisung"));
         assertTrue(result.contains("Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong "));
         assertFalse(result.contains("Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong Loooooong N"));
     }

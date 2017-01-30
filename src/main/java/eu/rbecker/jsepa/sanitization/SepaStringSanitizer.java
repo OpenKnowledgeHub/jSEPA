@@ -48,7 +48,7 @@ public class SepaStringSanitizer implements Serializable {
     }
 
     public String sanitze() {
-        String result = ALLOWED_CHARS_PATTERN.matcher(sepaString).replaceAll("_");
+        String result = ALLOWED_CHARS_PATTERN.matcher(sepaString).replaceAll(" ");
         if (maxLength != null) {
             result = result.substring(0, Math.min(result.length(), maxLength));
         }
