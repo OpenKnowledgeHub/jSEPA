@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package eu.rbecker.jsepa.sepa.validation;
+package eu.rbecker.jsepa.validation;
 
 import java.io.Serializable;
 import java.util.regex.Pattern;

@@ -3,7 +3,7 @@
  */
 package eu.rbecker.jsepa.directdebit.util;
 
-import eu.rbecker.jsepa.sepa.validation.BicValidator;
+import eu.rbecker.jsepa.validation.BicValidator;
 import java.math.BigDecimal;
 import org.apache.commons.validator.routines.IBANValidator;
 

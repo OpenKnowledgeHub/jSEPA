@@ -24,10 +24,12 @@ public class SepaStringSanitizerTest {
     @org.junit.Test
     public void testSanitze() {
         assertEquals("abcd", SepaStringSanitizer.of("abcd").sanitze());
-        assertEquals("äbcd", SepaStringSanitizer.of("äbcd").sanitze());
+        assertEquals("_bcd", SepaStringSanitizer.of("äbcd").sanitze());
+//        assertEquals("äbcd", SepaStringSanitizer.of("äbcd").sanitze());
         assertEquals("_bcd", SepaStringSanitizer.of("@bcd").sanitze());
         // see https://www.bundesbank.de/Redaktion/DE/Downloads/Aufgaben/Unbarer_Zahlungsverkehr/technische_spezifikation_sepa_lastschriften_november_2014.pdf?__blob=publicationFile
         String allowedChars = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 / - ? : ( ) . , + Ä, ä, Ö, ö, Ü, ü, ß, &, *, $, %";
+//        String allowedChars = "a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 / - ? : ( ) . , + Ä, ä, Ö, ö, Ü, ü, ß, &, *, $, %";
         assertEquals(allowedChars, SepaStringSanitizer.of(allowedChars).sanitze());
         
     }
