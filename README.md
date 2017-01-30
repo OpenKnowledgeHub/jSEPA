@@ -36,6 +36,26 @@ THE SOFTWARE.
 
 ## Usage
 
+### Bank data information lookup
+
+This is currently only implemented for german banks with data from the Bundesbank.
+
+Get BIC from IBAN:
+
+```java
+String bic = BankInformationStore.forIban(iban).getBic();
+```
+
+Get bank name from country and bank code:
+
+```java
+String bankName = BankInformationStore.forBankCode("de", bankCode).getBic();
+```
+
+The bank information store throws an `IllegalArgumentException` if non german country codes/IBANs are used.
+
+### Creation of pain.008.003.02 direct debit xml documents
+
 Here is a short mainly undocumented code example on how to use this. InvoiceBatch and Invoice classes are not included in jSEPA but the intention should be clear. More detailed documentation is comming soon.
 
 ```java
@@ -93,6 +113,10 @@ private void addInvoiceToDirectDebitDocument(DirectDebitDocumentData ddd, Invoic
     ddd.addPayment(result);
 }
 ```
+
+### Creation of pain.001.003.03 bank transfer xml documents
+
+Works similar to direct debit documents using the `SepaTransferDocumentBuilder`.
 
 ## Compiling
 
