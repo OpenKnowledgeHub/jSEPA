@@ -61,26 +61,31 @@ public class GermanBankInformationProvider implements BankInformationProvider {
 
     public GermanBankInformationProvider() {
     }
-    
+
     @Override
     public List<BankInformation> provide() {
         try (InputStream in = this.getClass().getResourceAsStream("/" + BANK_DATA_FILE_NAME)) {
             return new BufferedReader(new InputStreamReader(in))
                 .lines()
                 .map(l -> parseLine(l))
+                .filter(bi -> bi != null)
                 .collect(Collectors.toList());
         } catch (IOException ex) {
             // If this crashes, the library (build) is broken.
             throw new RuntimeException(ex);
         }
-        
+
     }
 
     private BankInformation parseLine(String l) {
-        String code = l.substring(0, 8);
-        String name = l.substring(9, 67);
-        String shortName = l.substring(107, 134);
-        String bic = l.substring(139, 150);
+        boolean paymentProvider = l.charAt(8) == '1';
+        if (!paymentProvider) {
+            return null;
+        }
+        String code = l.substring(0, 8).trim();
+        String name = l.substring(9, 67).trim();
+        String shortName = l.substring(107, 134).trim();
+        String bic = l.substring(139, 150).trim();
         BankInformation bi = new BankInformation(name, shortName, code, bic);
         return bi;
     }
