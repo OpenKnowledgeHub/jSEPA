@@ -1,6 +1,6 @@
 # jSEPA
 
-A java library to create valid PAIN.008.001.02 SEPA direct debit and PAIN.001.003.03 SEPA transfer XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
+A java library to create valid PAIN.008.001.02 (v3.1) SEPA direct debit and PAIN.001.003.03 SEPA transfer XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
 
 Both types of documents as created by the internal unit tests have been validated with Star Finanz SEPA XML Checker.
 
