@@ -54,15 +54,15 @@
                 <version>2.3</version>
                 <executions>
                     <execution>
-                        <id>xjc-eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02</id>
+                        <id>xjc-eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02</id>
                         <goals>
                             <goal>xjc</goal>
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/main/xsd/pain.008.003.02.xsd</source>
+                                <source>src/main/xsd/pain.008.001.02.xsd</source>
                             </sources>
-                            <packageName>eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02</packageName>
+                            <packageName>eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02</packageName>
                         </configuration>
                     </execution>
                     <execution>

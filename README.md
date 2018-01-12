@@ -1,6 +1,6 @@
 # jSEPA
 
-A java library to create valid pain.008.003.02 / v2.7 SEPA direct debit XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
+A java library to create valid PAIN.008.001.02 SEPA direct debit and PAIN.001.003.03 SEPA transfer XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
 
 Both types of documents as created by the internal unit tests have been validated with Star Finanz SEPA XML Checker.
 
@@ -54,7 +54,7 @@ String bankName = BankInformationStore.forBankCode("de", bankCode).getBic();
 
 The bank information store throws an `IllegalArgumentException` if non german country codes/IBANs are used.
 
-### Creation of pain.008.003.02 direct debit xml documents
+### Creation of pain.008.001.02 direct debit xml documents
 
 Here is a short mainly undocumented code example on how to use this. InvoiceBatch and Invoice classes are not included in jSEPA but the intention should be clear. More detailed documentation is comming soon.
 

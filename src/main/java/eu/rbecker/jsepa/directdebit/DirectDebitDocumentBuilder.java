@@ -4,49 +4,44 @@
 package eu.rbecker.jsepa.directdebit;
 
 import eu.rbecker.jsepa.directdebit.util.SepaXmlDocumentBuilder;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.AccountIdentificationSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ActiveOrHistoricCurrencyAndAmountSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ActiveOrHistoricCurrencyCodeEUR;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.CashAccountSEPA1;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.CashAccountSEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ChargeBearerTypeSEPACode;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.CustomerDirectDebitInitiationV02;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.DirectDebitTransactionInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.DirectDebitTransactionSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.Document;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.GroupHeaderSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.IdentificationSchemeNameSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.LocalInstrumentSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.MandateRelatedInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ObjectFactory;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA1;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA3;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartyIdentificationSEPA5;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PartySEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentIdentificationSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentInstructionInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentMethod2Code;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PaymentTypeInformationSDD;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.PersonIdentificationSEPA2;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RemittanceInformationSEPA1Choice;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RestrictedPersonIdentificationSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.RestrictedPersonIdentificationSchemeNameSEPA;
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.ServiceLevelSEPA;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.AccountIdentification4Choice;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.ActiveOrHistoricCurrencyAndAmount;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.CashAccount16;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.ChargeBearerType1Code;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.CustomerDirectDebitInitiationV02;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.DirectDebitTransaction6;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.DirectDebitTransactionInformation9;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.Document;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.GenericPersonIdentification1;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.GroupHeader39;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.LocalInstrument2Choice;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.MandateRelatedInformation6;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.ObjectFactory;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.Party6Choice;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PartyIdentification32;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PaymentIdentification1;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PaymentInstructionInformation4;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PaymentMethod2Code;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PaymentTypeInformation20;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PersonIdentification5;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.PersonIdentificationSchemeName1Choice;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.RemittanceInformation5;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.ServiceLevel8Choice;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
-import javax.xml.datatype.DatatypeConfigurationException;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author Robert Becker <robert at rbecker.eu>
  */
-class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
+public class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
 
-    public static String toXml(DirectDebitDocumentData ddd) throws DatatypeConfigurationException {
+    public static String toXml(DirectDebitDocumentData ddd) {
         // sepa xml document
         Document doc = new Document();
         // CustomerDirectDebitInitiationV02
@@ -64,21 +59,16 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         return resultWriter.toString();
     }
 
-    private static List<PaymentInstructionInformationSDD> createPaymentInstructions(DirectDebitDocumentData ddd) throws DatatypeConfigurationException {
-        List<PaymentInstructionInformationSDD> result = new ArrayList<>();
-
-        for (MandateType mt : MandateType.values()) {
-            if (ddd.getNumberOfPaymentsByMandateType(mt) > 0) {
-                result.add(createPaymentInstructionInformation(ddd, mt));
-            }
-        }
-
-        return result;
+    private static List<PaymentInstructionInformation4> createPaymentInstructions(DirectDebitDocumentData ddd) {
+        return Arrays.stream(MandateType.values())
+            .filter(mt -> ddd.getNumberOfPaymentsByMandateType(mt) > 0)
+            .map(mt -> createPaymentInstructionInformation(ddd, mt))
+            .collect(Collectors.toList());
     }
 
-    private static PaymentInstructionInformationSDD createPaymentInstructionInformation(DirectDebitDocumentData ddd, MandateType mandateType) throws DatatypeConfigurationException {
+    private static PaymentInstructionInformation4 createPaymentInstructionInformation(DirectDebitDocumentData ddd, MandateType mandateType) {
 
-        PaymentInstructionInformationSDD result = new PaymentInstructionInformationSDD();
+        PaymentInstructionInformation4 result = new PaymentInstructionInformation4();
         // payment information id
         result.setPmtInfId(ddd.getDocumentMessageId());
         // payment method (fixed)
@@ -97,7 +87,7 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         result.setReqdColltnDt(dateToXmlGregorianCalendarDate(ddd.getDueDateByMandateType(mandateType)));
 
         // creditor name
-        result.setCdtr(new PartyIdentificationSEPA5());
+        result.setCdtr(new PartyIdentification32());
         result.getCdtr().setNm(ddd.getCreditorName());
 
         // creditor iban
@@ -107,7 +97,7 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         result.setCdtrAgt(bicToBranchAndFinancialInstitutionIdentification(ddd.getCreditorBic()));
 
         // whatever, fixed
-        result.setChrgBr(ChargeBearerTypeSEPACode.SLEV);
+        result.setChrgBr(ChargeBearerType1Code.SLEV);
 
         // single payment transactions ... yay!
         result.getDrctDbtTxInf().addAll(createDirectDebitTransactionInformationBlocks(ddd, mandateType));
@@ -115,15 +105,15 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         return result;
     }
 
-    private static CashAccountSEPA1 ibanToCashAccountSepa1(String iban) {
-        CashAccountSEPA1 result = new CashAccountSEPA1();
-        result.setId(new AccountIdentificationSEPA());
+    private static CashAccount16 ibanToCashAccountSepa1(String iban) {
+        CashAccount16 result = new CashAccount16();
+        result.setId(new AccountIdentification4Choice());
         result.getId().setIBAN(iban);
         return result;
     }
 
-    private static Collection<? extends DirectDebitTransactionInformationSDD> createDirectDebitTransactionInformationBlocks(DirectDebitDocumentData ddd, MandateType mandateType) throws DatatypeConfigurationException {
-        List<DirectDebitTransactionInformationSDD> result = new ArrayList<>();
+    private static Collection<DirectDebitTransactionInformation9> createDirectDebitTransactionInformationBlocks(DirectDebitDocumentData ddd, MandateType mandateType) {
+        List<DirectDebitTransactionInformation9> result = new ArrayList<>();
 
         for (DirectDebitPayment p : ddd.getPaymentsByMandateType(mandateType)) {
             result.add(createDirectDebitTransaction(ddd, p));
@@ -132,15 +122,15 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         return result;
     }
 
-    private static DirectDebitTransactionInformationSDD createDirectDebitTransaction(DirectDebitDocumentData ddd, DirectDebitPayment p) throws DatatypeConfigurationException {
-        DirectDebitTransactionInformationSDD result = new DirectDebitTransactionInformationSDD();
+    private static DirectDebitTransactionInformation9 createDirectDebitTransaction(DirectDebitDocumentData ddd, DirectDebitPayment p) {
+        DirectDebitTransactionInformation9 result = new DirectDebitTransactionInformation9();
         // mandate id
-        result.setPmtId(new PaymentIdentificationSEPA());
+        result.setPmtId(new PaymentIdentification1());
         result.getPmtId().setEndToEndId(p.getMandateId());
 
         // currency and amount
-        result.setInstdAmt(new ActiveOrHistoricCurrencyAndAmountSEPA());
-        result.getInstdAmt().setCcy(ActiveOrHistoricCurrencyCodeEUR.EUR);
+        result.setInstdAmt(new ActiveOrHistoricCurrencyAndAmount());
+        result.getInstdAmt().setCcy("EUR");
         result.getInstdAmt().setValue(p.getPaymentSum());
 
         // transaction information
@@ -150,25 +140,25 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         result.setDbtrAgt(bicToBranchAndFinancialInstitutionIdentification(p.getDebitorBic()));
 
         // debitor name
-        result.setDbtr(new PartyIdentificationSEPA2());
+        result.setDbtr(new PartyIdentification32());
         result.getDbtr().setNm(p.getDebitorName());
 
         // debitor iban
-        result.setDbtrAcct(new CashAccountSEPA2());
-        result.getDbtrAcct().setId(new AccountIdentificationSEPA());
+        result.setDbtrAcct(new CashAccount16());
+        result.getDbtrAcct().setId(new AccountIdentification4Choice());
         result.getDbtrAcct().getId().setIBAN(p.getDebitorIban());
 
         // reson of payment
-        result.setRmtInf(new RemittanceInformationSEPA1Choice());
-        result.getRmtInf().setUstrd(p.getReasonForPayment());
+        result.setRmtInf(new RemittanceInformation5());
+        result.getRmtInf().getUstrd().add(p.getReasonForPayment());
 
         return result;
     }
 
-    private static DirectDebitTransactionSDD createDirectDebitTransaction(DirectDebitPayment p, DirectDebitDocumentData ddd) throws DatatypeConfigurationException {
-        DirectDebitTransactionSDD result = new DirectDebitTransactionSDD();
+    private static DirectDebitTransaction6 createDirectDebitTransaction(DirectDebitPayment p, DirectDebitDocumentData ddd) {
+        DirectDebitTransaction6 result = new DirectDebitTransaction6();
         // mandate related info
-        result.setMndtRltdInf(new MandateRelatedInformationSDD());
+        result.setMndtRltdInf(new MandateRelatedInformation6());
 
         // Erforderlich, wenn das Mandat seit letzten SEPA Lastschrift Einreichung ge�ndert wurde.
         // In diesem Fall ist das Feld mit "TRUE" zu belegen, ansonsten bleibt es leer.
@@ -179,34 +169,34 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         result.getMndtRltdInf().setDtOfSgntr(dateToXmlGregorianCalendarDate(p.getMandateDate()));
 
         // creditor related info
-        result.setCdtrSchmeId(new PartyIdentificationSEPA3());
-        result.getCdtrSchmeId().setId(new PartySEPA2());
-        result.getCdtrSchmeId().getId().setPrvtId(new PersonIdentificationSEPA2());
+        result.setCdtrSchmeId(new PartyIdentification32());
+        result.getCdtrSchmeId().setId(new Party6Choice());
+        result.getCdtrSchmeId().getId().setPrvtId(new PersonIdentification5());
 
         // person identification - (creditor identifier)
-        RestrictedPersonIdentificationSEPA inf = new RestrictedPersonIdentificationSEPA();
-        result.getCdtrSchmeId().getId().getPrvtId().setOthr(inf);
+        GenericPersonIdentification1 inf = new GenericPersonIdentification1();
+        result.getCdtrSchmeId().getId().getPrvtId().getOthr().add(inf);
         inf.setId(ddd.getCreditorIdentifier());
 
         // whatever, fixed to SEPA
-        inf.setSchmeNm(new RestrictedPersonIdentificationSchemeNameSEPA());
-        inf.getSchmeNm().setPrtry(IdentificationSchemeNameSEPA.SEPA);
+        inf.setSchmeNm(new PersonIdentificationSchemeName1Choice());
+        inf.getSchmeNm().setPrtry("SEPA");
 
         return result;
     }
 
-    private static PaymentTypeInformationSDD createPaymentTypeInformation(MandateType mandateType) {
-        PaymentTypeInformationSDD paymentType = new PaymentTypeInformationSDD();
-        paymentType.setSvcLvl(new ServiceLevelSEPA());
+    private static PaymentTypeInformation20 createPaymentTypeInformation(MandateType mandateType) {
+        PaymentTypeInformation20 paymentType = new PaymentTypeInformation20();
+        paymentType.setSvcLvl(new ServiceLevel8Choice());
         paymentType.getSvcLvl().setCd("SEPA");
-        paymentType.setLclInstrm(new LocalInstrumentSEPA());
+        paymentType.setLclInstrm(new LocalInstrument2Choice());
         paymentType.getLclInstrm().setCd("CORE");
         paymentType.setSeqTp(mandateType.getSepaSequenceType1Code());
         return paymentType;
     }
 
-    private static GroupHeaderSDD createGroupHeaderSdd(DirectDebitDocumentData ddd) throws DatatypeConfigurationException {
-        GroupHeaderSDD result = new GroupHeaderSDD();
+    private static GroupHeader39 createGroupHeaderSdd(DirectDebitDocumentData ddd) {
+        GroupHeader39 result = new GroupHeader39();
         // message id
         result.setMsgId(ddd.getDocumentMessageId());
 
@@ -220,10 +210,10 @@ class DirectDebitDocumentBuilder extends SepaXmlDocumentBuilder {
         result.setCtrlSum(ddd.getTotalPaymentSum());
 
         // creditor name
-        PartyIdentificationSEPA1 partyIdentificationSEPA1 = new PartyIdentificationSEPA1();
-        partyIdentificationSEPA1.setNm(ddd.getCreditorName());
+        PartyIdentification32 pi = new PartyIdentification32();
+        pi.setNm(ddd.getCreditorName());
 
-        result.setInitgPty(partyIdentificationSEPA1);
+        result.setInitgPty(pi);
 
         return result;
     }

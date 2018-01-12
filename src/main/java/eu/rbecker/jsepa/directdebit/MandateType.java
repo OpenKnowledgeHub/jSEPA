@@ -3,7 +3,7 @@
  */
 package eu.rbecker.jsepa.directdebit;
 
-import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_003_02.SequenceType1Code;
+import eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02.SequenceType1Code;
 
 /**
  *
