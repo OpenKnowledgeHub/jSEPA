@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
@@ -84,24 +85,36 @@ public class BankDataFileUpdater implements Serializable {
 
     public void checkAndUpdateFiles() throws Exception {
         LOG.info("Checking bank data files...");
-        checkGermany();
+        boolean updateRequired = false;
+        if (!checkGermany())
+            updateRequired = true;
+        if (updateRequired) {
+            System.out.println("############################################################");
+            System.out.println("New files have been added to the classpath - Please restart your build process!");
+            System.out.println("############################################################");
+            System.exit(1);
+        }
     }
 
-    private void checkGermany() throws MalformedURLException, IOException {
+    private boolean checkGermany() throws MalformedURLException, IOException {
         String filePath = targetDirectory + File.separator + GermanBankInformationProvider.BANK_DATA_FILE_NAME;
         File f = new File(filePath);
         if (!fileNeedsUpdate(f)) {
             LOG.log(Level.INFO, "{0} is up to date.", filePath);
-            return;
+            return true;
         }
-        LOG.log(Level.INFO, "{0} is outdated or missing - fetching new...", filePath);
         String url = resolveGermanBankDataFileUrl();
-        String content = fetchUrl(url);
-        if (f.exists()) {
-            f.delete();
-        }
-        Files.write(Paths.get(filePath), content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
+        LOG.log(Level.INFO, "{0} is outdated or missing - fetching new version from {1}", new String[]{filePath, url});
+        fetchUrlToFile(url, filePath);
         System.out.println("Done.");
+        return false;
+    }
+
+    private void fetchUrlToFile(String url, String filePath) throws IOException {
+        String content = fetchUrl(url);
+        Path file = Paths.get(filePath);
+        Files.createDirectories(file.getParent());
+        Files.write(file, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
     }
 
     private String resolveGermanBankDataFileUrl() throws IOException, RuntimeException {

@@ -45,7 +45,7 @@
                                 <argument>${basedir}/src/main/resources</argument>  
                             </arguments>  
                         </configuration>  
-                    </execution>  
+                    </execution>
                 </executions>  
             </plugin>  
             <plugin>
