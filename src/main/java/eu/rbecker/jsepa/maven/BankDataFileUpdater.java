@@ -49,26 +49,13 @@ import java.util.stream.Collectors;
 public class BankDataFileUpdater implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    
     private static final String DE_BANK_DATA_HOST = "https://www.bundesbank.de";
 
-    private static final String DE_BANK_DATA_INDEX_URL = DE_BANK_DATA_HOST + "/Redaktion/DE/Standardartikel/Aufgaben/Unbarer_Zahlungsverkehr/bankleitzahlen_download.html";
+    private static final String DE_BANK_DATA_INDEX_URL = DE_BANK_DATA_HOST + "/de/aufgaben/unbarer-zahlungsverkehr/serviceangebot/bankleitzahlen/download---bankleitzahlen-602592";
 
-    /**
-     * Should match paths like
-     * /Redaktion/DE/Downloads/Aufgaben/Unbarer_Zahlungsverkehr/Bankleitzahlen/2017_03_05/blz_2016_12_05_txt.txt?__blob=publicationFile
-     * or
-     * /Redaktion/DE/Downloads/Aufgaben/Unbarer_Zahlungsverkehr/Bankleitzahlen/2017_03_05/blz_2016_12_05_txt.txt;jsessionid=0000BPKSIVwMwqnw42YIVTLXJlY:-1?__blob=publicationFile
-     * but not
-     * /Redaktion/DE/Downloads/Aufgaben/Unbarer_Zahlungsverkehr/Bankleitzahlen/2017_03_05/blz_2016_12_05_xls.xlsx?__blob=publicationFile
-     * and not
-     * /Redaktion/DE/Downloads/Aufgaben/Unbarer_Zahlungsverkehr/Bankleitzahlen/2017_03_05/blz_loeschungen_2016_12_05.pdf?__blob=publicationFile.
-     *
-     * Only first occurance is relevant, i. e. The following may be present, too, together with the first string.
-     * /Redaktion/DE/Downloads/Aufgaben/Unbarer_Zahlungsverkehr/Bankleitzahlen/2016_12_04/blz_2016_09_05_txt.txt?__blob=publicationFile
-     */
-    private static final Pattern DE_BANK_FILE_REGEXP = Pattern.compile("href=\"([^\"]*/blz_\\d{4}_\\d{2}_\\d{2}_txt\\.txt(;jsessionid=[^\\?]*)?\\?__blob=publicationFile)\"");
-
+    private static final Pattern DE_BANK_FILE_REGEXP = Pattern.compile("href=\"(/resource/blob/[0-9]+/[a-z0-9]+/mL/blz-aktuell-txt-data.txt)\"");
+    
     private static final long FILE_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 7; // 1 week
 
     private final String targetDirectory;
