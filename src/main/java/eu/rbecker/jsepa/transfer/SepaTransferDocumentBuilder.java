@@ -160,7 +160,7 @@ class SepaTransferDocumentBuilder extends SepaXmlDocumentBuilder {
     private static void setEndToEndId(SepaTransferPayment p, CreditTransferTransactionInformationSCT result) {
         PaymentIdentificationSEPA pis = new PaymentIdentificationSEPA();
         String id = p.getEndToEndId();
-        pis.setEndToEndId(id == null || id.isEmpty() ? "NOTPROVIDED" : "");
+        pis.setEndToEndId(id == null || id.isEmpty() ? "NOTPROVIDED" : id);
         result.setPmtId(pis);
     }
 
