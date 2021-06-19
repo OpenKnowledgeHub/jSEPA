@@ -14,7 +14,7 @@ Provides IBAN/BIC based bank information lookup for german banks using data prov
 
 The MIT License
 
-Copyright 2017 Robert Becker <robert at rbecker.eu>.
+Copyright 2021 Jelmen Guhlke <jelmen at jguhlke.de>.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -124,3 +124,7 @@ Just checkout the repository and run `mvn clean install`. A `.jar` file will be 
 
 The maven build script automatically downloads a text file from the Bundesbank containing bank information data to enable IBAN to BIC transformation.
 The file will only be downloaded when it is missing or older than a week. 
+
+## Credits
+
+This library was originally written by Robert Becker <robert at rbecker.eu> and is now maintained by Jelmen Guhlke.

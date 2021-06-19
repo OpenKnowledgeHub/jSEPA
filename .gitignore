@@ -4,3 +4,8 @@
 /dist/
 /src/main/resources/bankdata.*
 .DS_STORE
+
+#VS Code
+.classpath
+.project
+.settings
