@@ -22,8 +22,11 @@ jobs:
       run: ./github_env.sh
       env:
         GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
-    - name: Build with Maven
+    - name: update maven version number
       run: mvn versions:set -DnewVersion=$BUILD_VERSION
+    - name: Build with Maven (may fail due to bank data refresh)
+      run: mvn --batch-mode --update-snapshots verify
+      continue-on-error: true
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
     - name: Publish package
