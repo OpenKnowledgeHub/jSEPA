@@ -1,0 +1,32 @@
+name: Library CI
+on:
+  release:
+    types: [ published ]
+  push:
+    branches:
+      - '**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Java JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: determine version number
+      run: ./github_env.sh
+      env:
+        GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
+    - name: Build with Maven
+      run: mvn versions:set -DnewVersion=$BUILD_VERSION
+    - name: Build with Maven
+      run: mvn --batch-mode --update-snapshots verify
+   - name: Publish package
+     run: mvn --batch-mode deploy
+     env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

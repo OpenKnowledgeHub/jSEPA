@@ -1,11 +1,22 @@
 /target/
 /nbproject/
+/nbproject/**
 /build/
+/build/**
 /dist/
 /src/main/resources/bankdata.*
 .DS_STORE
-
-#VS Code
 .classpath
 .project
 .settings
+Thumbs.db
+.DS_Store
+.gradle
+target/
+out/
+.idea/
+.idea/**
+*.iml
+*.ipr
+*.iws
+.factorypath
