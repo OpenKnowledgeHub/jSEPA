@@ -26,7 +26,7 @@ jobs:
       run: mvn versions:set -DnewVersion=$BUILD_VERSION
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
-   - name: Publish package
-     run: mvn --batch-mode deploy
-     env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish package
+      run: mvn --batch-mode deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
