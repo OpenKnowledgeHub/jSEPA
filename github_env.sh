@@ -28,5 +28,5 @@ else
     echo "GITHUB_SHA is not 40chars long: $GITHUB_SHA"
   fi
 
-  output BUILD_VERSION "$branch@$hash"
+  output BUILD_VERSION "$branch-$hash"
 fi
