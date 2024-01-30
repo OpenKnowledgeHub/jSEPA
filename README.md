@@ -1,5 +1,10 @@
 # jSEPA
 
+> This project is currently under maintenance, since the `XSD` versions are outdated.
+> Further informations regarding this process can be found in the [jSEPA 2.0](https://github.com/JelmenGuhlke/jSEPA/milestone/1) milestone
+
+---
+
 A java library to create valid PAIN.008.001.02 (v3.1) SEPA direct debit and PAIN.001.003.03 SEPA transfer XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
 
 Both types of documents as created by the internal unit tests have been validated with Star Finanz SEPA XML Checker.
