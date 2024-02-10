@@ -26,41 +26,40 @@ package eu.rbecker.jsepa.information;
 import java.io.Serializable;
 
 /**
- *
  * @author Robert Becker <robert at rbecker.eu>
  */
 public class BankInformation implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private final String name;
+  private final String name;
 
-    private final String shortName;
+  private final String shortName;
 
-    private final String bankCode;
+  private final String bankCode;
 
-    private final String bic;
+  private final String bic;
 
-    public BankInformation(String name, String shortName, String bankCode, String bic) {
-        this.name = name;
-        this.bankCode = bankCode;
-        this.bic = bic;
-        this.shortName = shortName;
-    }
+  public BankInformation(String name, String shortName, String bankCode, String bic) {
+    this.name = name;
+    this.bankCode = bankCode;
+    this.bic = bic;
+    this.shortName = shortName;
+  }
 
-    public String getBic() {
-        return bic;
-    }
+  public String getBic() {
+    return bic;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getBankCode() {
-        return bankCode;
-    }
+  public String getBankCode() {
+    return bankCode;
+  }
 
-    public String getShortName() {
-        return shortName;
-    }
+  public String getShortName() {
+    return shortName;
+  }
 }

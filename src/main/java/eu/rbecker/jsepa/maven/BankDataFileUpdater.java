@@ -57,24 +57,24 @@ public class BankDataFileUpdater implements Serializable {
     private static final Pattern DE_BANK_FILE_REGEXP = Pattern.compile("href=\"(/resource/blob/[0-9]+/[a-z0-9]+/mL/blz-aktuell-txt-data.txt)\"");
     
     private static final long FILE_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 7; // 1 week
-
-    private final String targetDirectory;
-
     private static final Logger LOG = Logger.getLogger(BankDataFileUpdater.class.getName());
-
-    public static void main(String... args) throws Exception {
-        new BankDataFileUpdater(args[0]).checkAndUpdateFiles();
-    }
+    private final String targetDirectory;
 
     public BankDataFileUpdater(String targetDirectory) {
         this.targetDirectory = targetDirectory;
     }
 
+    public static void main(String... args) throws Exception {
+        new BankDataFileUpdater(args[0]).checkAndUpdateFiles();
+    }
+
+    private static boolean fileNeedsUpdate(File f) {
+        return !f.exists() || System.currentTimeMillis() - f.lastModified() > FILE_MAX_AGE_MS;
+    }
+
     public void checkAndUpdateFiles() throws Exception {
         LOG.info("Checking bank data files...");
-        boolean updateRequired = false;
-        if (!checkGermany())
-            updateRequired = true;
+        boolean updateRequired = !checkGermany();
         if (updateRequired) {
             System.out.println("############################################################");
             System.out.println("New files have been added to the classpath - Please restart your build process!");
@@ -83,7 +83,7 @@ public class BankDataFileUpdater implements Serializable {
         }
     }
 
-    private boolean checkGermany() throws MalformedURLException, IOException {
+    private boolean checkGermany() throws IOException {
         String filePath = targetDirectory + File.separator + GermanBankInformationProvider.BANK_DATA_FILE_NAME;
         File f = new File(filePath);
         if (!fileNeedsUpdate(f)) {
@@ -114,7 +114,7 @@ public class BankDataFileUpdater implements Serializable {
         return DE_BANK_DATA_HOST + m.group(1);
     }
 
-    private String fetchUrl(String urlString) throws MalformedURLException, IOException {
+    private String fetchUrl(String urlString) throws IOException {
         URL url = new URL(urlString);
         String result;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.ISO_8859_1))) {
@@ -124,10 +124,6 @@ public class BankDataFileUpdater implements Serializable {
                 .collect(Collectors.joining("\n"));
         }
         return result;
-    }
-
-    private static boolean fileNeedsUpdate(File f) {
-        return !f.exists() || System.currentTimeMillis() - f.lastModified() > FILE_MAX_AGE_MS;
     }
 
 }

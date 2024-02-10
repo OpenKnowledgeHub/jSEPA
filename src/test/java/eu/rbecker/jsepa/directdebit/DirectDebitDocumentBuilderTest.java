@@ -3,16 +3,13 @@
  */
 package eu.rbecker.jsepa.directdebit;
 
+import static org.junit.Assert.*;
+
 import eu.rbecker.jsepa.directdebit.util.SepaValidationException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import javax.xml.datatype.DatatypeConfigurationException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

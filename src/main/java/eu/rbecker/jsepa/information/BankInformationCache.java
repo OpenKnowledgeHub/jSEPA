@@ -28,54 +28,53 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *
  * @author Robert Becker <robert at rbecker.eu>
  */
 public class BankInformationCache implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private final String countryCode;
+  private final String countryCode;
 
-    private final Map<String, BankInformation> byBic = new TreeMap<>();
+  private final Map<String, BankInformation> byBic = new TreeMap<>();
 
-    private final Map<String, BankInformation> byBankCode = new TreeMap<>();
+  private final Map<String, BankInformation> byBankCode = new TreeMap<>();
 
-    public BankInformationCache(String countryCode, Iterable<BankInformation> data) {
-        this.countryCode = countryCode;
-        readData(data);
+  public BankInformationCache(String countryCode, Iterable<BankInformation> data) {
+    this.countryCode = countryCode;
+    readData(data);
+  }
+
+  private void readData(Iterable<BankInformation> data) {
+    for (BankInformation bi : data) {
+      byBic.put(bi.getBic(), bi);
+      byBankCode.put(bi.getBankCode(), bi);
     }
+  }
 
-    private void readData(Iterable<BankInformation> data) {
-        for (BankInformation bi : data) {
-            byBic.put(bi.getBic(), bi);
-            byBankCode.put(bi.getBankCode(), bi);
-        }
-    }
+  public String getCountryCode() {
+    return countryCode;
+  }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
-    
-    public BankInformation findByBic(String bic) {
-        return byBic.get(bic);
-    }
+  public BankInformation findByBic(String bic) {
+    return byBic.get(bic);
+  }
 
-    public BankInformation findByBankCode(String bankCode) {
-        return byBankCode.get(bankCode);
-    }
+  public BankInformation findByBankCode(String bankCode) {
+    return byBankCode.get(bankCode);
+  }
 
-    public BankInformation findByIban(String iban) {
-        if (!iban.toLowerCase().startsWith("de")) {
-            throw new IllegalArgumentException("findByIban is currently only implemented for german IBANs.");
-        }
-        String bankCode;
-        bankCode = extractGermanBankCodeFromIban(iban);
-        return byBankCode.get(bankCode);
+  public BankInformation findByIban(String iban) {
+    if (!iban.toLowerCase().startsWith("de")) {
+      throw new IllegalArgumentException(
+          "findByIban is currently only implemented for german IBANs.");
     }
+    String bankCode;
+    bankCode = extractGermanBankCodeFromIban(iban);
+    return byBankCode.get(bankCode);
+  }
 
-    private String extractGermanBankCodeFromIban(String iban) {
-        return iban.substring(4, 12);
-    }
-
+  private String extractGermanBankCodeFromIban(String iban) {
+    return iban.substring(4, 12);
+  }
 }
