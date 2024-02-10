@@ -29,30 +29,22 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Robert Becker <robert at rbecker.eu>
  */
 public class BankInformationFactoryTest {
-    
-    public BankInformationFactoryTest() {
-    }
 
-    /**
-     * Test of getCacheForIban method, of class BankInformationStore.
-     */
-    @Test
-    public void testForIban() {
-        assertTrue(BankInformationStore.getCacheForIban("DEXXXX").getCountryCode().equals("de"));
-    }
+  public BankInformationFactoryTest() {}
 
-    /**
-     * Test of getCacheForCountryCode method, of class BankInformationStore.
-     */
-    @Test
-    public void testForCountryCode() {
-        assertTrue(BankInformationStore.getCacheForIban("de").getCountryCode().equals("de"));
-        assertTrue(BankInformationStore.getCacheForIban("DE").getCountryCode().equals("de"));
-    }
+  /** Test of getCacheForIban method, of class BankInformationStore. */
+  @Test
+  public void testForIban() {
+    assertEquals("de", BankInformationStore.getCacheForIban("DEXXXX").getCountryCode());
+  }
 
-    
+  /** Test of getCacheForCountryCode method, of class BankInformationStore. */
+  @Test
+  public void testForCountryCode() {
+    assertEquals("de", BankInformationStore.getCacheForIban("de").getCountryCode());
+    assertEquals("de", BankInformationStore.getCacheForIban("DE").getCountryCode());
+  }
 }

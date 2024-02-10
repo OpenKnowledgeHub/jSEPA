@@ -1,8 +1,8 @@
 package eu.rbecker.jsepa.transfer;
 
+import eu.rbecker.jsepa.directdebit.util.SepaUtil;
 import eu.rbecker.jsepa.directdebit.util.SepaValidationException;
 import eu.rbecker.jsepa.sanitization.SepaStringSanitizer;
-import eu.rbecker.jsepa.directdebit.util.SepaUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -16,35 +16,28 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class SepaTransferDocumentData {
 
-    private String payerBic;
-
-    private String payerIban;
-
-    private String payerName;
-
-    private String documentMessageId;
-
-    private Calendar dateOfExecution = Calendar.getInstance();
-    
-    private boolean batchBooking = true;
-    
     private final List<SepaTransferPayment> payments = new ArrayList<>();
-
-    public String toXml() throws DatatypeConfigurationException {
-        return SepaTransferDocumentBuilder.toXml(this);
-    }
+    private String payerBic;
+    private String payerIban;
+    private String payerName;
+    private String documentMessageId;
+    private Calendar dateOfExecution = Calendar.getInstance();
+    private boolean batchBooking = true;
 
     public SepaTransferDocumentData() {
     }
-    
+
     public SepaTransferDocumentData(String payerBic, String payerIban, String payerName, String documentMessageId) throws SepaValidationException {
         setPayerBic(payerBic);
         setPayerIban(payerIban);
         setPayerName(payerName);
         setDocumentMessageId(documentMessageId);
     }
-
     
+    public String toXml() throws DatatypeConfigurationException {
+        return SepaTransferDocumentBuilder.toXml(this);
+    }
+
     public BigDecimal getTotalPaymentSum() {
         BigDecimal result = new BigDecimal(0).setScale(2, RoundingMode.HALF_UP);
         for (SepaTransferPayment p : payments) {

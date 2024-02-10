@@ -24,10 +24,9 @@
 package eu.rbecker.jsepa.information;
 
 /**
- *
  * @author Robert Becker <robert at rbecker.eu>
  */
 public interface BankInformationProvider {
-    
-    public abstract Iterable<BankInformation> provide();
+
+  Iterable<BankInformation> provide();
 }
