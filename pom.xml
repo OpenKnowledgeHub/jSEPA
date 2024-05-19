@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>eu.rbecker</groupId>
+    <groupId>io.jsepa</groupId>
     <artifactId>jSepa</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -21,8 +21,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>17</source>
+                        <target>17</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -39,7 +39,7 @@
                             <goal>java</goal>  
                         </goals>  
                         <configuration>  
-                            <mainClass>eu.rbecker.jsepa.maven.BankDataFileUpdater</mainClass>
+                            <mainClass>io.jsepa.maven.BankDataFileUpdater</mainClass>
                             <cleanupDaemonThreads>false</cleanupDaemonThreads>
                             <arguments>  
                                 <argument>${basedir}/src/main/resources</argument>  
@@ -47,38 +47,6 @@
                         </configuration>  
                     </execution>
                 </executions>  
-            </plugin>  
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <id>xjc-eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/main/xsd/pain.008.001.02.xsd</source>
-                            </sources>
-                            <packageName>eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02</packageName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>xjc-eu.rbecker.jsepa.directdebit.xml.schema.pain_001_003_03</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/main/xsd/pain.001.003.03.xsd</source>
-                            </sources>
-                            <packageName>eu.rbecker.jsepa.directdebit.xml.schema.pain_001_003_03</packageName>
-                            <clearOutputDir>false</clearOutputDir>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
