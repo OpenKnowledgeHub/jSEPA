@@ -22,10 +22,10 @@
 
 package io.jsepa.directdebit;
 
+import io.jsepa.SepaXmlDocument;
 import io.jsepa.directdebit.util.SepaUtil;
 import io.jsepa.directdebit.util.SepaValidationException;
 import io.jsepa.sanitization.SepaStringSanitizer;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.xml.datatype.DatatypeConfigurationException;
 
-public class DirectDebitDocumentData {
+public class DirectDebitDocumentData implements SepaXmlDocument {
 
   private final List<DirectDebitPayment> payments = new ArrayList<>();
   private String creditorBic;
@@ -60,7 +60,7 @@ public class DirectDebitDocumentData {
   }
 
   public String toXml() throws DatatypeConfigurationException {
-    return DirectDebitDocumentBuilder.toXml(this);
+    return new DirectDebitDocumentBuilder().toXml(this);
   }
 
   /**

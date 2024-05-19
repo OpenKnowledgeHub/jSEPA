@@ -27,18 +27,4 @@ public enum MandateType {
   RECURRENT,
   RECURRENT_FIRST,
   RECURRENT_FINAL;
-
-  public SequenceType1Code getSepaSequenceType1Code() {
-    switch (this) {
-      case ONE_OFF:
-        return SequenceType1Code.OOFF;
-      case RECURRENT:
-        return SequenceType1Code.RCUR;
-      case RECURRENT_FINAL:
-        return SequenceType1Code.FNAL;
-      case RECURRENT_FIRST:
-        return SequenceType1Code.FRST;
-    }
-    return null;
-  }
 }

@@ -22,6 +22,7 @@
 
 package io.jsepa.transfer;
 
+import io.jsepa.SepaXmlDocument;
 import io.jsepa.directdebit.util.SepaUtil;
 import io.jsepa.directdebit.util.SepaValidationException;
 import io.jsepa.sanitization.SepaStringSanitizer;
@@ -32,7 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 
-public class SepaTransferDocumentData {
+public class SepaTransferDocumentData implements SepaXmlDocument {
 
   private final List<SepaTransferPayment> payments = new ArrayList<>();
   private String payerBic;
@@ -54,7 +55,7 @@ public class SepaTransferDocumentData {
   }
 
   public String toXml() throws DatatypeConfigurationException {
-    return SepaTransferDocumentBuilder.toXml(this);
+    return new SepaTransferDocumentBuilder().toXml(this);
   }
 
   public BigDecimal getTotalPaymentSum() {

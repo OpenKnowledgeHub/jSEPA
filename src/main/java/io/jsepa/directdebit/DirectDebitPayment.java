@@ -25,7 +25,6 @@ package io.jsepa.directdebit;
 import io.jsepa.directdebit.util.SepaUtil;
 import io.jsepa.directdebit.util.SepaValidationException;
 import io.jsepa.sanitization.SepaStringSanitizer;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;

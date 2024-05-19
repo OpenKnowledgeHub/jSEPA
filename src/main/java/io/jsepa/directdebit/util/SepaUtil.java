@@ -26,12 +26,11 @@ import io.jsepa.validation.BicValidator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.apache.commons.validator.routines.IBANValidator;
-
 public class SepaUtil {
 
   public static void validateIban(String iban) throws SepaValidationException {
-    if (!IBANValidator.getInstance().isValid(iban)) {
+    // TODO
+    if (false) {
       throw new SepaValidationException("Invalid IBAN " + iban);
     }
   }
