@@ -23,22 +23,24 @@
 package io.jsepa.maven;
 
 import io.jsepa.information.GermanBankInformationProvider;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class BankDataFileUpdater implements Serializable {
 
@@ -48,8 +50,7 @@ public class BankDataFileUpdater implements Serializable {
 
   private static final String DE_BANK_DATA_INDEX_URL =
       DE_BANK_DATA_HOST
-          + "/de/aufgaben/unbarer-zahlungsverkehr/serviceangebot/bankleitzahlen/download---bankleitzahlen-602592";
-
+          + "/de/aufgaben/unbarer-zahlungsverkehr/serviceangebot/bankleitzahlen/download-bankleitzahlen-602592";
   private static final Pattern DE_BANK_FILE_REGEXP =
       Pattern.compile("href=\"(/resource/blob/[0-9]+/[a-z0-9]+/mL/blz-aktuell-txt-data.txt)\"");
 
@@ -81,7 +82,7 @@ public class BankDataFileUpdater implements Serializable {
     }
   }
 
-  private boolean checkGermany() throws IOException {
+  private boolean checkGermany() throws IOException, URISyntaxException, InterruptedException {
     String filePath =
         targetDirectory + File.separator + GermanBankInformationProvider.BANK_DATA_FILE_NAME;
     File f = new File(filePath);
@@ -99,14 +100,16 @@ public class BankDataFileUpdater implements Serializable {
     return false;
   }
 
-  private void fetchUrlToFile(String url, String filePath) throws IOException {
+  private void fetchUrlToFile(String url, String filePath)
+      throws IOException, URISyntaxException, InterruptedException {
     String content = fetchUrl(url);
     Path file = Paths.get(filePath);
     Files.createDirectories(file.getParent());
     Files.write(file, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
   }
 
-  private String resolveGermanBankDataFileUrl() throws IOException, RuntimeException {
+  private String resolveGermanBankDataFileUrl()
+      throws IOException, RuntimeException, URISyntaxException, InterruptedException {
     String content = fetchUrl(DE_BANK_DATA_INDEX_URL);
     Matcher m = DE_BANK_FILE_REGEXP.matcher(content);
     if (!m.find()) {
@@ -117,13 +120,20 @@ public class BankDataFileUpdater implements Serializable {
     return DE_BANK_DATA_HOST + m.group(1);
   }
 
-  private String fetchUrl(String urlString) throws IOException {
-    URL url = new URL(urlString);
-    String result;
-    try (BufferedReader reader =
-        new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.ISO_8859_1))) {
-      result = reader.lines().parallel().collect(Collectors.joining("\n"));
-    }
-    return result;
+  private String fetchUrl(String urlString)
+      throws IOException, URISyntaxException, InterruptedException {
+
+    HttpClient client =
+        HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(2))
+            .followRedirects(HttpClient.Redirect.NEVER)
+            .version(HttpClient.Version.HTTP_2)
+            .build();
+
+    HttpRequest request = HttpRequest.newBuilder().GET().uri(new URI(urlString)).build();
+
+    HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+    return httpResponse.body();
   }
 }
