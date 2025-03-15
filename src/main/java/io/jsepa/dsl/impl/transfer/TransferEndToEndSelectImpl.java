@@ -1,0 +1,47 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2025 openknowledgehub.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+package io.jsepa.dsl.impl.transfer;
+
+import io.jsepa.data.transfer.SepaTransferDocumentBuilder;
+import io.jsepa.data.transfer.SepaTransferPaymentBuilder;
+import io.jsepa.dsl.TransferEndSelect;
+import io.jsepa.dsl.TransferEndToEndSelect;
+
+public class TransferEndToEndSelectImpl implements TransferEndToEndSelect {
+
+  private final SepaTransferDocumentBuilder documentBuilder;
+  private final SepaTransferPaymentBuilder paymentBuilder;
+
+  public TransferEndToEndSelectImpl(
+      SepaTransferDocumentBuilder documentBuilder, SepaTransferPaymentBuilder paymentBuilder) {
+    this.documentBuilder = documentBuilder;
+    this.paymentBuilder = paymentBuilder;
+  }
+
+  @Override
+  public TransferEndSelect withEndToEndIdentifier(String endToEndIdentifier) {
+    paymentBuilder.withEndToEndId(endToEndIdentifier);
+
+    return new TransferEndSelectImpl(documentBuilder, paymentBuilder);
+  }
+}

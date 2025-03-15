@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="file:./src/main/resources/xsd/pain.008.003.02.xsd.txt" uri="xml-resources/jaxb/SepaDirectDebitXmlBinding/pain.008.003.02.xsd.txt.xsd"/>
-    <system systemId="file:./src/main/resources/xsd/pain.008.003.02.xsd" uri="xml-resources/jaxb/SepaDirectDebitXmlBinding/pain.008.003.02.xsd"/>
-    <system systemId="file:./src/main/resources/xsd/pain.008.001.02.xsd" uri="xml-resources/jaxb/SepaDirectDebitXmlBinding00800102/pain.008.001.02.xsd"/>
-</catalog>

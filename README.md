@@ -1,135 +1,77 @@
 # jSEPA
 
-> This project is currently under maintenance, since the `XSD` versions are outdated.
-> Further informations regarding this process can be found in the [jSEPA 2.0](https://github.com/JelmenGuhlke/jSEPA/milestone/1) milestone
-
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=OpenKnowledgeHub_jSEPA&metric=bugs)](https://sonarcloud.io/summary/new_code?id=OpenKnowledgeHub_jSEPA)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=OpenKnowledgeHub_jSEPA&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=OpenKnowledgeHub_jSEPA)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=OpenKnowledgeHub_jSEPA&metric=coverage)](https://sonarcloud.io/summary/new_code?id=OpenKnowledgeHub_jSEPA)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=OpenKnowledgeHub_jSEPA&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=OpenKnowledgeHub_jSEPA)
 ---
 
-A java library to create valid PAIN.008.001.02 (v3.1) SEPA direct debit and PAIN.001.003.03 SEPA transfer XML documents using CORE and pain.001.003.03 SEPA transfer XML documents.
+A java library to create valid PAIN.008.001.11 SEPA direct debit and PAIN.001.001.12 SEPA transfer XML documents.
 
-Both types of documents as created by the internal unit tests have been validated with Star Finanz SEPA XML Checker.
-
-Includes IBAN validation by apache commons and a regular expression based validation for BICs. Strings are sanitized according to SEPA rules.
-
-There is no national bank database lookup for IBAN and BIC validation, as that caused more harm than good in the past.
-
-Provides IBAN/BIC based bank information lookup for german banks using data provided by the Bundesbank. This also enables IBAN to BIC conversation.
-
-## License
-
-The MIT License
-
-Copyright 2021 Jelmen Guhlke <jelmen at jguhlke.de>.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+Strings are sanitized according to SEPA rules.
 
 ## Usage
 
-### Bank data information lookup
+### Creation of pain.008.001.11 direct debit xml documents
 
-This is currently only implemented for german banks with data from the Bundesbank.
-
-Get BIC from IBAN:
-
-```java
-String bic = BankInformationStore.forIban(iban).getBic();
-```
-
-Get bank name from country and bank code:
+To create a direct debit initialisation XML document you simple start at the `DSL.directDebit()` point and the DSL will
+guide you through the steps:
 
 ```java
-String bankName = BankInformationStore.forBankCode("de", bankCode).getBic();
-```
-
-The bank information store throws an `IllegalArgumentException` if non german country codes/IBANs are used.
-
-### Creation of pain.008.001.02 direct debit xml documents
-
-Here is a short mainly undocumented code example on how to use this. InvoiceBatch and Invoice classes are not included in jSEPA but the intention should be clear. More detailed documentation is comming soon.
-
-```java
-public String createSepaXml(InvoiceBatch batch) {
-    try {
-        DirectDebitDocumentData ddd = initDirectDebitDocument(batch);
-
-        for (Invoice i : batch.getInvoices()) {
-            addInvoiceToDirectDebitDocument(ddd, i);
-        }
-
-        return ddd.toXml();
-    } catch (SepaValidationException | DatatypeConfigurationException e) {
-        response.sendError(500, e.getMessage());
-        LOG.log(Level.SEVERE, "Could not create SEPA document", e);
-    }
-}
-
-private DirectDebitDocumentData initDirectDebitDocument(InvoiceBatch batch) throws SepaValidationException {
-    DirectDebitDocumentData result = new DirectDebitDocument();
-
-    BankData payeeBankData = batch.getPayee().getInvoicingData().getBankData();
-    result.setDocumentMessageId(batch.getId().toString());
-    result.setCreditorBic(payeeBankData.getBic());
-    result.setCreditorIban(payeeBankData.getIban());
-    result.setCreditorName(payee.getName());
-    result.setCreditorIdentifier(payee.getInvoicingData().getCreditorIdentifier());
-
-    return result;
-}
-
-private void addInvoiceToDirectDebitDocument(DirectDebitDocumentData ddd, Invoice i) throws SepaValidationException {
-    DirectDebitPayment result = new DirectDebitPayment();
-    BankData bd = i.getRecipientBankData();
-    result.setPaymentSum(i.getAfterTaxTotal());
-    result.setDebitorBic(bd.getBic());
-    result.setDebitorIban(bd.getIban());
-    DirectDebitAuthorization dda = i.getDirectDebitAuthorization();
-    result.setMandateDate(dda.getAuthorizedOn());
-    result.setMandateId(dda.getAuthorizationReferenceIdentifier());
-    result.setDebitorName(i.getRecipientName());
-    // german "ueberweisungszweck"
-    result.setReasonForPayment(sanitizeCharacters(i.getLocalizedTypeName() + " " + i.getInvoiceNumber()));
-
-    if (!i.getDirectDebitAuthorization().isRecurrent()) {
-        result.setMandateType(MandateType.ONE_OFF);
-    } else if (i.isFirstUsageOfDirectDebitAuthorization()) {
-        result.setMandateType(MandateType.RECURRENT_FIRST);
-    } else {
-        result.setMandateType(MandateType.RECURRENT);
-    }
-
-    result.setDirectDebitDueDate(i.getDirectDebitDueDate());
-
-    ddd.addPayment(result);
+public String generateXml() {
+    DSL.directDebit("MessageId")
+            .creditor(
+                    DSL.account()
+                            .name("Creditor Name")
+                            .identification("Creditor Identification")
+                            .bic("BYLADEM1001")
+                            .iban("DE02120300000000202051"))
+            .receive(550)
+            .from(
+                    DSL.account()
+                            .name("Debitor Name")
+                            .identification("Debitor Identification")
+                            .bic("BYLADEM1001")
+                            .iban("DE02120300000000203051"))
+            .on(LocalDate.now().plusWeeks(1))
+            .withPaymentIdentification("PaymentIdentification")
+            .overMandate(DSL.oneTimeMandate("Mandate Identifier").issuedAt(LocalDate.now()))
+            .toXml();
 }
 ```
 
-### Creation of pain.001.003.03 bank transfer xml documents
+### Creation of pain.001.001.12 bank transfer xml documents
 
-Works similar to direct debit documents using the `SepaTransferDocumentBuilder`.
+Creating bank transfer XML document works as simple as the direct debit ones. This time start at the `DSL.transfer()`
+entry point and the DSL will guide you through the steps:
+
+```java
+public String generateXml() {
+    DSL.transfer("MessageId")
+            .from(
+                    DSL.account()
+                            .name("Payer Name")
+                            .identification("Payer Identification")
+                            .bic("BYLADEM1001")
+                            .iban("DE02120300000000202051"))
+            .on(LocalDateTime.now().plusWeeks(1))
+            .to(
+                    DSL.account()
+                            .name("Payee Name")
+                            .identification("Payee Identification")
+                            .bic("BYLADEM1001")
+                            .iban("DE02120300000000203051"))
+            .amount(125)
+            .withEndToEndIdentifier("End to end identification")
+            .toXml();
+}
+```
 
 ## Compiling
 
 Just checkout the repository and run `mvn clean install`. A `.jar` file will be created in the `target/` directory.
 
-The maven build script automatically downloads a text file from the Bundesbank containing bank information data to enable IBAN to BIC transformation.
-The file will only be downloaded when it is missing or older than a week. 
-
 ## Credits
 
-This library was originally written by Robert Becker <robert at rbecker.eu> and is now maintained by Jelmen Guhlke.
+This library was originally written by Robert Becker <robert at rbecker.eu> and is now maintained by Jelmen
+Guhlke <mail at jguhlke.de>.

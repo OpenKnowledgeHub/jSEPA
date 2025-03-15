@@ -1,113 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2025 openknowledgehub.org
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+  ~ and associated documentation files (the “Software”), to deal in the Software without restriction,
+  ~ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+  ~ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or
+  ~ substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+  ~ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+  ~ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+  ~ AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  ~ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>eu.rbecker</groupId>
+    <groupId>io.jsepa</groupId>
     <artifactId>jSepa</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <pluginManagement>
-            <plugins>
-                <!--
-                    If we e.g. execute on JDK 1.7, we should compile for Java 7 to get
-                    the same (or higher) JAXB API version as used during the xjc execution.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>  
-                <groupId>org.codehaus.mojo</groupId>  
-                <artifactId>exec-maven-plugin</artifactId>  
-                <version>1.5.0</version>  
-                <executions>  
-                    <execution>  
-                        <phase>compile</phase>  
-                        <goals>  
-                            <goal>java</goal>  
-                        </goals>  
-                        <configuration>  
-                            <mainClass>eu.rbecker.jsepa.maven.BankDataFileUpdater</mainClass>
-                            <cleanupDaemonThreads>false</cleanupDaemonThreads>
-                            <arguments>  
-                                <argument>${basedir}/src/main/resources</argument>  
-                            </arguments>  
-                        </configuration>  
-                    </execution>
-                </executions>  
-            </plugin>  
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <id>xjc-eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/main/xsd/pain.008.001.02.xsd</source>
-                            </sources>
-                            <packageName>eu.rbecker.jsepa.directdebit.xml.schema.pain_008_001_02</packageName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>xjc-eu.rbecker.jsepa.directdebit.xml.schema.pain_001_003_03</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/main/xsd/pain.001.003.03.xsd</source>
-                            </sources>
-                            <packageName>eu.rbecker.jsepa.directdebit.xml.schema.pain_001_003_03</packageName>
-                            <clearOutputDir>false</clearOutputDir>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>The JSepa library can be used to generate ISO 20022 payment initialisation XML documents.
+    </description>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://mit-license.org/</url>
+            <comments>For more information see the LICENSE.txt included with the sources.</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com:OpenKnowledgeHub/jSEPA.git</connection>
+        <developerConnection>scm:git:ssh:git@github.com:OpenKnowledgeHub/jSEPA.git</developerConnection>
+        <url>https://github.com/OpenKnowledgeHub/jSEPA</url>
+    </scm>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jakarta.jaxb.version>4.0.2</jakarta.jaxb.version>
+        <junit.version>5.12.0-M1</junit.version>
+        <assertj.version>3.27.3</assertj.version>
+    </properties>
+
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jakarta.jaxb.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jakarta.jaxb.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>1.3</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.5.1</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
         </dependency>
+
     </dependencies>
 </project>
