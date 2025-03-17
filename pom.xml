@@ -53,7 +53,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jakarta.jaxb.version>4.0.2</jakarta.jaxb.version>
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <jakarta.jaxb.version>3.0.1</jakarta.jaxb.version>
         <junit.version>5.12.0-M1</junit.version>
         <assertj.version>3.27.3</assertj.version>
     </properties>
@@ -93,4 +94,18 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
