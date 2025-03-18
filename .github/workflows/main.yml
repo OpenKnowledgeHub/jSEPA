@@ -1,4 +1,4 @@
-name: Development Github Actions
+name: Main Github Actions
 
 on:
   push:
