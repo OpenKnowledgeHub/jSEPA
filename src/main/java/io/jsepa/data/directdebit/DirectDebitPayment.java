@@ -24,6 +24,7 @@ package io.jsepa.data.directdebit;
 
 import io.jsepa.data.common.AccountIdentification;
 import io.jsepa.data.configuration.LocalDateAdapter;
+import io.jsepa.exception.JSepaValidationException;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -54,7 +55,7 @@ public class DirectDebitPayment {
   private final LocalDate directDebitDueAt;
 
   @XmlElement(name = "Currency")
-  private final String currency = "EUR";
+  private final String currency;
 
   @XmlElement(name = "Mandate")
   private final Mandate mandate;
@@ -67,6 +68,7 @@ public class DirectDebitPayment {
     this.reasonForPayment = null;
     this.directDebitDueAt = null;
     this.mandate = null;
+    this.currency = null;
   }
 
   public DirectDebitPayment(
@@ -74,14 +76,36 @@ public class DirectDebitPayment {
       BigDecimal amount,
       AccountIdentification debitor,
       String reasonForPayment,
-      LocalDate directDebitDueAt,
+      LocalDate dueAt,
       Mandate mandate) {
+
+    if (Objects.isNull(identification)) {
+      throw new JSepaValidationException("DirectDebitPayment 'identification' cannot be null");
+    }
+
+    if (Objects.isNull(amount)) {
+      throw new JSepaValidationException("DirectDebitPayment 'amount' cannot be null");
+    }
+
+    if (Objects.isNull(debitor)) {
+      throw new JSepaValidationException("DirectDebitPayment 'debitor' cannot be null");
+    }
+
+    if (Objects.isNull(dueAt)) {
+      throw new JSepaValidationException("DirectDebitPayment 'dueAt' cannot be null");
+    }
+
+    if (Objects.isNull(mandate)) {
+      throw new JSepaValidationException("DirectDebitPayment 'mandate' cannot be null");
+    }
+
     this.identification = identification;
     this.amount = amount;
     this.debitor = debitor;
     this.reasonForPayment = reasonForPayment;
-    this.directDebitDueAt = directDebitDueAt;
+    this.directDebitDueAt = dueAt;
     this.mandate = mandate;
+    this.currency = "EUR";
   }
 
   public String getIdentification() {

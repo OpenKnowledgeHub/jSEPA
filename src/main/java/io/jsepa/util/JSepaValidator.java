@@ -22,22 +22,30 @@
 
 package io.jsepa.util;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
+import org.apache.commons.validator.routines.IBANValidator;
 
 public class JSepaValidator {
+
+  private static final IBANValidator IBAN_VALIDATOR = IBANValidator.getInstance();
+
+  private JSepaValidator() {}
 
   private static final Pattern BIC_PATTERN =
       Pattern.compile("^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$");
 
   public static boolean isValidBic(String bic) {
-    if (bic == null || bic.isEmpty()) {
-      return true;
+    if (Objects.isNull(bic) || bic.isBlank()) {
+      return false;
     }
     return BIC_PATTERN.matcher(bic).matches();
   }
 
   public static boolean isValidIban(String iban) {
-    // TODO
-    return true;
+    if (Objects.isNull(iban) || iban.isBlank()) {
+      return false;
+    }
+    return IBAN_VALIDATOR.isValid(iban);
   }
 }

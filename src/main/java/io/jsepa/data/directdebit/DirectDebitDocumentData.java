@@ -45,7 +45,7 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
   private final LocalDateTime creationTime;
 
   @XmlElement(name = "PaymentMethod")
-  private final String paymentMethod = "DD";
+  private final String paymentMethod;
 
   @XmlElement(name = "MessageId")
   private final String messageId;
@@ -63,27 +63,29 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
     this.messageId = null;
     this.creditor = null;
     this.payments = null;
+    this.paymentMethod = null;
   }
 
   public DirectDebitDocumentData(
       String messageId, AccountIdentification creditor, List<DirectDebitPayment> payments) {
 
     if (Objects.isNull(messageId)) {
-      throw new JSepaValidationException("DirectDebitDocumentData 'messageId' should not be null");
+      throw new JSepaValidationException("DirectDebitDocumentData 'messageId' cannot be null");
     }
 
     if (Objects.isNull(creditor)) {
-      throw new JSepaValidationException("DirectDebitDocumentData 'creditor' should not be null");
+      throw new JSepaValidationException("DirectDebitDocumentData 'creditor' cannot be null");
     }
 
     if (Objects.isNull(payments)) {
-      throw new JSepaValidationException("DirectDebitDocumentData 'payments' should not be null");
+      throw new JSepaValidationException("DirectDebitDocumentData 'payments' cannot be null");
     }
 
     this.creationTime = LocalDateTime.now();
     this.messageId = messageId;
     this.creditor = creditor;
     this.payments = payments;
+    this.paymentMethod = "DD";
   }
 
   public LocalDateTime getCreationTime() {
@@ -100,6 +102,10 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
 
   public List<DirectDebitPayment> getPayments() {
     return payments;
+  }
+
+  public String getPaymentMethod() {
+    return paymentMethod;
   }
 
   @Override

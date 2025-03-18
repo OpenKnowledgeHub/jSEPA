@@ -25,10 +25,12 @@ package io.jsepa.api.objects;
 import static io.jsepa.api.objects.TestObjects.accountIdentification;
 import static io.jsepa.api.objects.TestObjects.mandate;
 
+import io.jsepa.data.directdebit.DirectDebitDocumentData;
 import io.jsepa.data.directdebit.DirectDebitPayment;
 import io.jsepa.data.directdebit.DirectDebitPaymentBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class DirectDebitTestProvider {
 
@@ -38,7 +40,20 @@ public class DirectDebitTestProvider {
     return new DirectDebitPaymentTestProvider();
   }
 
-  public static class DirectDebitPaymentTestProvider extends DirectDebitTestProvider {
+  public DirectDebitDocumentDataTestProvider document() {
+    return new DirectDebitDocumentDataTestProvider();
+  }
+
+  public static class DirectDebitDocumentDataTestProvider {
+    public DirectDebitDocumentData defaultDocument() {
+      return new DirectDebitDocumentData(
+          MESSAGE_IDENTIFICATION,
+          TestObjects.accountIdentification().defaultAccount(),
+          List.of(TestObjects.directDebit().payment().defaultPayment()));
+    }
+  }
+
+  public static class DirectDebitPaymentTestProvider {
     public static final String PAYMENT_IDENTIFICATION = "identification";
     public static final String REASON_FOR_PAYMENT = "Invoice XXX";
     public static final LocalDate DUE_AT = LocalDate.of(2021, 1, 1);

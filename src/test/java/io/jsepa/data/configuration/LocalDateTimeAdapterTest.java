@@ -45,7 +45,7 @@ class LocalDateTimeAdapterTest {
   @Test
   @DisplayName("Should marshal a LocalDateTime")
   void testMarshalLocalDateTime() {
-    final String marshalledDateTime = underTest.marshal(testDateTime);
+    final var marshalledDateTime = underTest.marshal(testDateTime);
 
     assertThat(marshalledDateTime).isNotNull().isNotBlank().isEqualTo(testDateTimeString);
   }
@@ -53,7 +53,7 @@ class LocalDateTimeAdapterTest {
   @Test
   @DisplayName("Should marshal null without failing")
   void testMarshalLocalDateTimeNull() {
-    final String marshalledDateTime = underTest.marshal(null);
+    final var marshalledDateTime = underTest.marshal(null);
 
     assertThat(marshalledDateTime).isNull();
   }
@@ -61,7 +61,7 @@ class LocalDateTimeAdapterTest {
   @Test
   @DisplayName("Should unmarshal a LocalDateTime")
   void testUnmarshalLocalDateTime() {
-    final LocalDateTime unmarshalledDateTime = underTest.unmarshal(testDateTimeString);
+    final var unmarshalledDateTime = underTest.unmarshal(testDateTimeString);
 
     assertThat(unmarshalledDateTime).isNotNull().isEqualTo(testDateTime);
   }
@@ -69,7 +69,7 @@ class LocalDateTimeAdapterTest {
   @Test
   @DisplayName("Should unmarshal null without failing")
   void testUnmarshalLocalDateTimeNull() {
-    final LocalDateTime unmarshalledDateTime = underTest.unmarshal(null);
+    final var unmarshalledDateTime = underTest.unmarshal(null);
 
     assertThat(unmarshalledDateTime).isNull();
   }

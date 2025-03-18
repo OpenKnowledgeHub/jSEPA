@@ -2,10 +2,9 @@ name: Development Github Actions
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:

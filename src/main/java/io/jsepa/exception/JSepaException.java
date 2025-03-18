@@ -23,22 +23,11 @@
 package io.jsepa.exception;
 
 public class JSepaException extends RuntimeException {
-  public JSepaException() {}
-
   public JSepaException(String message) {
     super(message);
   }
 
   public JSepaException(String message, Throwable cause) {
     super(message, cause);
-  }
-
-  public JSepaException(Throwable cause) {
-    super(cause);
-  }
-
-  public JSepaException(
-      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-    super(message, cause, enableSuppression, writableStackTrace);
   }
 }

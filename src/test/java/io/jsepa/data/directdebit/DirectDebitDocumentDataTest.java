@@ -31,12 +31,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.jsepa.data.common.AccountIdentification;
 import io.jsepa.exception.JSepaValidationException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-import org.assertj.core.data.TemporalUnitWithinOffset;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,25 +45,34 @@ class DirectDebitDocumentDataTest {
   @Test
   @DisplayName("Should create a valid DirectDebitDocumentData")
   void testCreate() {
-    final DirectDebitDocumentData createdDirectDebitDocumentData =
+    final var createdDirectDebitDocumentData =
         new DirectDebitDocumentData(
             MESSAGE_IDENTIFICATION,
             accountIdentification().defaultAccount(),
             Collections.singletonList(directDebit().payment().defaultPayment()));
 
-    assertThat(createdDirectDebitDocumentData).isNotNull();
-    assertThat(createdDirectDebitDocumentData.getMessageId()).isEqualTo(MESSAGE_IDENTIFICATION);
-    assertThat(createdDirectDebitDocumentData.getCreationTime())
-        .isCloseTo(LocalDateTime.now(), new TemporalUnitWithinOffset(500, ChronoUnit.MILLIS));
-    assertThat(createdDirectDebitDocumentData.getPayments()).isNotNull().hasSize(1);
+    jSepaAssertThat(createdDirectDebitDocumentData)
+        .isNotNull()
+        .hasMessageId(MESSAGE_IDENTIFICATION)
+        .hasCreationTimeCloseToNow();
 
     jSepaAssertThat(createdDirectDebitDocumentData.getCreditor())
         .isNotNull()
         .hasDefaultTestValues();
 
+    assertThat(createdDirectDebitDocumentData.getPayments()).isNotNull().hasSize(1);
+
     jSepaAssertThat(createdDirectDebitDocumentData.getPayments().get(0))
         .isNotNull()
         .hasDefaultTestValues();
+  }
+
+  @Test
+  @DisplayName("Should create an empty DirectDebitDocumentData for JAX-B")
+  void testCreateEmpty() {
+    final var createdDirectDebitDocumentData = new DirectDebitDocumentData();
+
+    jSepaAssertThat(createdDirectDebitDocumentData).isNotNull().isEmpty();
   }
 
   @ParameterizedTest
@@ -90,16 +96,16 @@ class DirectDebitDocumentDataTest {
             null,
             accountIdentification().defaultAccount(),
             Collections.singletonList(directDebit().payment().defaultPayment()),
-            "DirectDebitDocumentData 'messageId' should not be null"),
+            "DirectDebitDocumentData 'messageId' cannot be null"),
         Arguments.of(
             MESSAGE_IDENTIFICATION,
             null,
             Collections.singletonList(directDebit().payment().defaultPayment()),
-            "DirectDebitDocumentData 'creditor' should not be null"),
+            "DirectDebitDocumentData 'creditor' cannot be null"),
         Arguments.of(
             MESSAGE_IDENTIFICATION,
             accountIdentification().defaultAccount(),
             null,
-            "DirectDebitDocumentData 'payments' should not be null"));
+            "DirectDebitDocumentData 'payments' cannot be null"));
   }
 }

@@ -8,7 +8,6 @@ on:
 
 jobs:
   compile:
-    if: github.event_name == 'push' && !contains(github.event.pull_request.base.ref, 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
