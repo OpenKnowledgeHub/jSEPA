@@ -27,7 +27,6 @@ import io.jsepa.exception.JSepaException;
 import io.jsepa.transformer.JSepaTransformer;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.util.JAXBSource;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,29 +41,57 @@ import javax.xml.transform.stream.StreamSource;
 public abstract class AbstractJSepaTransformer<I extends SepaXmlDocument>
     implements JSepaTransformer<I> {
 
+  private final TransformerFactory transformerFactory;
+
+  protected AbstractJSepaTransformer() {
+    transformerFactory = TransformerFactory.newDefaultInstance();
+  }
+
   protected abstract Class<I> getSepaDocumentType();
 
   protected abstract String getXsltFileName();
 
   @Override
-  public String transform(I directDebitDocumentData) throws JSepaException {
+  public String transform(I sourceDocument) throws JSepaException {
+    Transformer transformer = createTransformer();
+    Source inputXml = createSource(createContext(), sourceDocument);
 
+    return transformInput(transformer, inputXml);
+  }
+
+  private JAXBContext createContext() {
+    try {
+      return JAXBContext.newInstance(getSepaDocumentType());
+    } catch (JAXBException exception) {
+      throw new JSepaException("Could not create a new JAXBContext", exception);
+    }
+  }
+
+  private Transformer createTransformer() {
     try (InputStream transformFileStream =
-            DirectDebitTransformer.class.getResourceAsStream(getXsltFileName());
-        StringWriter resultWriter = new StringWriter()) {
-      JAXBContext context = JAXBContext.newInstance(getSepaDocumentType());
-      Marshaller marshaller = context.createMarshaller();
-      marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        DirectDebitTransformer.class.getResourceAsStream(getXsltFileName())) {
 
-      TransformerFactory factory = TransformerFactory.newInstance();
-      Transformer transformer = factory.newTransformer(new StreamSource(transformFileStream));
+      return transformerFactory.newTransformer(new StreamSource(transformFileStream));
+    } catch (IOException | TransformerException exception) {
+      throw new JSepaException("Could not create a new Transformer", exception);
+    }
+  }
 
-      Source inputXml = new JAXBSource(context, directDebitDocumentData);
-      transformer.transform(inputXml, new StreamResult(resultWriter));
+  private Source createSource(JAXBContext context, I sourceDocument) {
+    try {
+      return new JAXBSource(context, sourceDocument);
+    } catch (JAXBException exception) {
+      throw new JSepaException("Could not create a new JAXBSource", exception);
+    }
+  }
+
+  private String transformInput(Transformer transformer, Source source) {
+    try (StringWriter resultWriter = new StringWriter()) {
+      transformer.transform(source, new StreamResult(resultWriter));
 
       return resultWriter.toString();
-    } catch (IOException | JAXBException | TransformerException exception) {
-      throw new JSepaException(exception);
+    } catch (IOException | TransformerException exception) {
+      throw new JSepaException("Could not transform source XML", exception);
     }
   }
 }

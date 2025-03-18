@@ -35,4 +35,8 @@ public class TestObjects {
   public static DirectDebitTestProvider directDebit() {
     return new DirectDebitTestProvider();
   }
+
+  public static SepaTransferTestProvider transfer() {
+    return new SepaTransferTestProvider();
+  }
 }

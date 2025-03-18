@@ -22,9 +22,10 @@
 
 package io.jsepa.data.transfer;
 
-import io.jsepa.data.configuration.LocalDateTimeAdapter;
 import io.jsepa.data.SepaXmlDocument;
 import io.jsepa.data.common.AccountIdentification;
+import io.jsepa.data.configuration.LocalDateTimeAdapter;
+import io.jsepa.exception.JSepaValidationException;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -33,6 +34,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement(name = "SepaTransferDocumentData")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -52,9 +54,6 @@ public class SepaTransferDocumentData implements SepaXmlDocument {
   @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
   private final LocalDateTime dateOfExecution;
 
-  @XmlElement(name = "BatchBooking")
-  private final boolean batchBooking;
-
   @XmlElementWrapper(name = "Payments")
   @XmlElement(name = "Payment")
   private final List<SepaTransferPayment> payments;
@@ -64,7 +63,6 @@ public class SepaTransferDocumentData implements SepaXmlDocument {
     this.payer = null;
     this.messageId = null;
     this.dateOfExecution = null;
-    this.batchBooking = false;
     this.payments = null;
   }
 
@@ -72,14 +70,34 @@ public class SepaTransferDocumentData implements SepaXmlDocument {
       AccountIdentification payer,
       String messageId,
       LocalDateTime dateOfExecution,
-      boolean batchBooking,
       List<SepaTransferPayment> payments) {
+
+    if (Objects.isNull(payer)) {
+      throw new JSepaValidationException("SepaTransferDocumentData 'payer' cannot be null");
+    }
+
+    if (Objects.isNull(messageId)) {
+      throw new JSepaValidationException("SepaTransferDocumentData 'messageId' cannot be null");
+    }
+
+    if (Objects.isNull(dateOfExecution)) {
+      throw new JSepaValidationException(
+          "SepaTransferDocumentData 'dateOfExecution' cannot be null");
+    }
+
+    if (Objects.isNull(payments)) {
+      throw new JSepaValidationException("SepaTransferDocumentData 'payments' cannot be null");
+    }
+
     this.creationTime = LocalDateTime.now();
     this.payer = payer;
     this.messageId = messageId;
     this.dateOfExecution = dateOfExecution;
-    this.batchBooking = batchBooking;
     this.payments = payments;
+  }
+
+  public LocalDateTime getCreationTime() {
+    return creationTime;
   }
 
   public AccountIdentification getPayer() {
@@ -92,10 +110,6 @@ public class SepaTransferDocumentData implements SepaXmlDocument {
 
   public LocalDateTime getDateOfExecution() {
     return dateOfExecution;
-  }
-
-  public boolean isBatchBooking() {
-    return batchBooking;
   }
 
   public List<SepaTransferPayment> getPayments() {

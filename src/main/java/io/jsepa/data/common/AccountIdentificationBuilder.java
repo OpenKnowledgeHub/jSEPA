@@ -41,7 +41,7 @@ public class AccountIdentificationBuilder {
       throw new JSepaValidationException("'name' cannot be null");
     }
 
-    if (name.trim().isEmpty()) {
+    if (name.isBlank()) {
       throw new JSepaValidationException("'name' cannot be empty");
     }
 
@@ -57,7 +57,7 @@ public class AccountIdentificationBuilder {
       throw new JSepaValidationException("'identifier' cannot be null");
     }
 
-    if (identifier.trim().isEmpty()) {
+    if (identifier.isBlank()) {
       throw new JSepaValidationException("'identifier' cannot be empty");
     }
 
@@ -71,7 +71,7 @@ public class AccountIdentificationBuilder {
       throw new JSepaValidationException("'bic' cannot be null");
     }
 
-    if (bic.trim().isEmpty()) {
+    if (bic.isBlank()) {
       throw new JSepaValidationException("'bic' cannot be empty");
     }
 
@@ -89,7 +89,7 @@ public class AccountIdentificationBuilder {
       throw new JSepaValidationException("'iban' cannot be null");
     }
 
-    if (iban.trim().isEmpty()) {
+    if (iban.isBlank()) {
       throw new JSepaValidationException("'iban' cannot be empty");
     }
 

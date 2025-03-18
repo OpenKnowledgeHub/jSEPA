@@ -34,6 +34,15 @@ public class AccountIdentificationAssert
     super(accountIdentification, AccountIdentificationAssert.class);
   }
 
+  public AccountIdentificationAssert isEmpty() {
+    assertThat(actual.getName()).isNull();
+    assertThat(actual.getIdentifier()).isNull();
+    assertThat(actual.getBic()).isNull();
+    assertThat(actual.getIban()).isNull();
+
+    return this;
+  }
+
   public AccountIdentificationAssert hasDefaultTestValues() {
     hasName(AccountIdentificationTestProvider.NAME);
     hasIdentifier(AccountIdentificationTestProvider.IDENTIFICATION);

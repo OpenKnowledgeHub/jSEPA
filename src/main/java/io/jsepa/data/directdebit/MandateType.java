@@ -22,23 +22,23 @@
 
 package io.jsepa.data.directdebit;
 
-import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlEnum;
+import jakarta.xml.bind.annotation.XmlEnumValue;
 
+@XmlEnum
 public enum MandateType {
-  FIRST("FRST"),
-  RECURRING("RCUR"),
-  FINAL("FNAL"),
-  ONE_OFF("OOFF"),
-  REPRESENTED("RPRE");
+  @XmlEnumValue("FRST")
+  FIRST,
 
-  @XmlElement(name = "Code")
-  private final String code;
+  @XmlEnumValue("RCUR")
+  RECURRING,
 
-  MandateType(String code) {
-    this.code = code;
-  }
+  @XmlEnumValue("FNAL")
+  FINAL,
 
-  public String code() {
-    return code;
-  }
+  @XmlEnumValue("OOFF")
+  ONE_OFF,
+
+  @XmlEnumValue("RPRE")
+  REPRESENTED
 }

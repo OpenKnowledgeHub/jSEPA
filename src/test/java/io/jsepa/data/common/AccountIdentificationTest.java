@@ -43,7 +43,7 @@ class AccountIdentificationTest {
   @Test
   @DisplayName("Should create a valid AccountIdentification")
   void testCreate() {
-    final AccountIdentification createdAccountIdentification =
+    final var createdAccountIdentification =
         new AccountIdentification(NAME, IDENTIFICATION, BIC, IBAN);
 
     jSepaAssertThat(createdAccountIdentification)
@@ -51,6 +51,14 @@ class AccountIdentificationTest {
         .hasIdentifier(IDENTIFICATION)
         .hasBic(BIC)
         .hasIban(IBAN);
+  }
+
+  @Test
+  @DisplayName("Should create an empty AccountIdentification for JAX-B")
+  void testCreateEmptyAccountIdentification() {
+    final var createdAccountIdentification = new AccountIdentification();
+
+    jSepaAssertThat(createdAccountIdentification).isEmpty();
   }
 
   @ParameterizedTest
@@ -72,11 +80,11 @@ class AccountIdentificationTest {
   private static Stream<Arguments> provideNullTestArguments() {
     return Stream.of(
         Arguments.of(
-            null, IDENTIFICATION, BIC, IBAN, "AccountIdentifier 'name' should not be null"),
-        Arguments.of(NAME, null, BIC, IBAN, "AccountIdentifier 'identifier' should not be null"),
+            null, IDENTIFICATION, BIC, IBAN, "AccountIdentifier 'name' cannot be null"),
+        Arguments.of(NAME, null, BIC, IBAN, "AccountIdentifier 'identifier' cannot be null"),
         Arguments.of(
-            NAME, IDENTIFICATION, null, IBAN, "AccountIdentifier 'bic' should not be null"),
+            NAME, IDENTIFICATION, null, IBAN, "AccountIdentifier 'bic' cannot be null"),
         Arguments.of(
-            NAME, IDENTIFICATION, BIC, null, "AccountIdentifier 'iban' should not be null"));
+            NAME, IDENTIFICATION, BIC, null, "AccountIdentifier 'iban' cannot be null"));
   }
 }

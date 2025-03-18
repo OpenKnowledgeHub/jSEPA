@@ -42,7 +42,7 @@ class DirectDebitDocumentBuilderTest {
   @Test
   @DisplayName("Should create a valid DirectDebitDocument")
   void testCreate() {
-    final DirectDebitDocumentData createdDirectDebitDocumentData =
+    final var createdDirectDebitDocumentData =
         DirectDebitDocumentBuilder.create(MESSAGE_IDENTIFICATION)
             .withCreditor(accountIdentification().defaultAccount())
             .addPayment(directDebit().payment().defaultBuilder())

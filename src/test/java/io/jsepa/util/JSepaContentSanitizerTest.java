@@ -71,7 +71,7 @@ class JSepaContentSanitizerTest {
 
     final String sanitizedContent = JSepaContentSanitizer.of(givenInput).sanitize();
 
-    assertThat(sanitizedContent).isEqualTo("");
+    assertThat(sanitizedContent).isEmpty();
   }
 
   @Test
@@ -79,7 +79,7 @@ class JSepaContentSanitizerTest {
   void testSanitizeNullInput() {
     final String sanitizedContent = JSepaContentSanitizer.of(null).sanitize();
 
-    assertThat(sanitizedContent).isEqualTo("");
+    assertThat(sanitizedContent).isEmpty();
   }
 
   @Test
@@ -89,7 +89,7 @@ class JSepaContentSanitizerTest {
 
     final String sanitizedContent = JSepaContentSanitizer.of(givenInput).sanitize();
 
-    assertThat(sanitizedContent).isEqualTo("");
+    assertThat(sanitizedContent).isEmpty();
   }
 
   @Test

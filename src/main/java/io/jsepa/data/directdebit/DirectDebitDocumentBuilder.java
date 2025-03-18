@@ -44,7 +44,7 @@ public class DirectDebitDocumentBuilder {
       throw new JSepaValidationException("'messageId' cannot be null");
     }
 
-    if (messageId.trim().isEmpty()) {
+    if (messageId.isBlank()) {
       throw new JSepaValidationException("'messageId' cannot be empty");
     }
 

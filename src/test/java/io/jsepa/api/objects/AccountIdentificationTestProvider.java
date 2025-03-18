@@ -28,9 +28,19 @@ public class AccountIdentificationTestProvider {
   public static final String NAME = "AccountId";
   public static final String IDENTIFICATION = "Identification";
   public static final String BIC = "BYLADEM1001";
-  public static final String IBAN = "DE02120300000000202051";
+  public static final String IBAN = "DE89370400440532013000";
+
+  public static final String SPANISH_NAME = "Another_AccountId";
+  public static final String SPANISH_IDENTIFICATION = "Anther_Identification";
+  public static final String SPANISH_BIC = "CAIXESBBXXX";
+  public static final String SPANISH_IBAN = "ES9121000418450200051332";
 
   public AccountIdentification defaultAccount() {
     return new AccountIdentification(NAME, IDENTIFICATION, BIC, IBAN);
+  }
+
+  public AccountIdentification spanish() {
+    return new AccountIdentification(
+        SPANISH_NAME, SPANISH_IDENTIFICATION, SPANISH_BIC, SPANISH_IBAN);
   }
 }

@@ -23,7 +23,7 @@
 package io.jsepa.data.transfer;
 
 import io.jsepa.data.common.AccountIdentification;
-import io.jsepa.exception.JSepaException;
+import io.jsepa.exception.JSepaValidationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,16 +34,17 @@ public class SepaTransferDocumentBuilder {
   private AccountIdentification payer;
   private String messageId;
   private LocalDateTime dateOfExecution;
-  private boolean batchBooking = true;
   private List<SepaTransferPayment> payments;
 
   private SepaTransferDocumentBuilder() {}
 
   public static SepaTransferDocumentBuilder create(String messageId) {
-    Objects.requireNonNull(messageId);
+    if (Objects.isNull(messageId)) {
+      throw new JSepaValidationException("'messageId' cannot be null");
+    }
 
-    if (messageId.isEmpty()) {
-      throw new JSepaException("messageId cannot be empty");
+    if (messageId.isBlank()) {
+      throw new JSepaValidationException("'messageId' cannot be empty");
     }
 
     SepaTransferDocumentBuilder builder = new SepaTransferDocumentBuilder();
@@ -52,31 +53,30 @@ public class SepaTransferDocumentBuilder {
     return builder;
   }
 
-  public SepaTransferDocumentBuilder withPayer(AccountIdentification identification) {
+  public SepaTransferDocumentBuilder withPayer(AccountIdentification payer) {
+    if (Objects.isNull(payer)) {
+      throw new JSepaValidationException("'payer' cannot be null");
+    }
 
-    Objects.requireNonNull(identification);
-
-    this.payer = identification;
+    this.payer = payer;
 
     return this;
   }
 
   public SepaTransferDocumentBuilder withDateOfExecution(LocalDateTime dateOfExecution) {
-    Objects.requireNonNull(dateOfExecution);
+    if (Objects.isNull(dateOfExecution)) {
+      throw new JSepaValidationException("'dateOfExecution' cannot be null");
+    }
 
     this.dateOfExecution = dateOfExecution;
 
     return this;
   }
 
-  public SepaTransferDocumentBuilder withBatchBooking(boolean batchBooking) {
-    this.batchBooking = batchBooking;
-
-    return this;
-  }
-
   public SepaTransferDocumentBuilder addPayment(SepaTransferPaymentBuilder paymentBuilder) {
-    Objects.requireNonNull(paymentBuilder);
+    if (Objects.isNull(paymentBuilder)) {
+      throw new JSepaValidationException("'paymentBuilder' cannot be null");
+    }
 
     if (Objects.isNull(this.payments)) {
       this.payments = new ArrayList<>();
@@ -88,6 +88,6 @@ public class SepaTransferDocumentBuilder {
   }
 
   public SepaTransferDocumentData build() {
-    return new SepaTransferDocumentData(payer, messageId, dateOfExecution, batchBooking, payments);
+    return new SepaTransferDocumentData(payer, messageId, dateOfExecution, payments);
   }
 }

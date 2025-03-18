@@ -40,7 +40,7 @@ class AccountIdentificationBuilderTest {
   @Test
   @DisplayName("Should build a valid AccountIdentification")
   void testCreate() {
-    final AccountIdentification createdAccountIdentification =
+    final var createdAccountIdentification =
         AccountIdentificationBuilder.withName(NAME)
             .withBic(AccountIdentificationTestProvider.BIC)
             .withIban(AccountIdentificationTestProvider.IBAN)

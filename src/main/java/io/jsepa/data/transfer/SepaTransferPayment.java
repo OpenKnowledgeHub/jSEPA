@@ -23,11 +23,13 @@
 package io.jsepa.data.transfer;
 
 import io.jsepa.data.common.AccountIdentification;
+import io.jsepa.exception.JSepaValidationException;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @XmlRootElement(name = "Payment")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -53,7 +55,20 @@ public class SepaTransferPayment {
   }
 
   public SepaTransferPayment(
-          BigDecimal amount, AccountIdentification payee, String reasonForPayment, String endToEndId) {
+      BigDecimal amount, AccountIdentification payee, String reasonForPayment, String endToEndId) {
+
+    if (Objects.isNull(amount)) {
+      throw new JSepaValidationException("SepaTransferPayment 'amount' cannot be null");
+    }
+
+    if (Objects.isNull(payee)) {
+      throw new JSepaValidationException("SepaTransferPayment 'payee' cannot be null");
+    }
+
+    if (Objects.isNull(endToEndId)) {
+      throw new JSepaValidationException("SepaTransferPayment 'endToEndId' cannot be null");
+    }
+
     this.amount = amount;
     this.payee = payee;
     this.reasonForPayment = reasonForPayment;

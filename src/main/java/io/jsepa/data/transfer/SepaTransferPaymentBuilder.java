@@ -23,7 +23,7 @@
 package io.jsepa.data.transfer;
 
 import io.jsepa.data.common.AccountIdentification;
-import io.jsepa.exception.JSepaException;
+import io.jsepa.exception.JSepaValidationException;
 import io.jsepa.util.JSepaContentSanitizer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -43,10 +43,12 @@ public class SepaTransferPaymentBuilder {
   }
 
   public SepaTransferPaymentBuilder withAmount(BigDecimal amount) {
-    Objects.requireNonNull(amount);
+    if (Objects.isNull(amount)) {
+      throw new JSepaValidationException("'amount' cannot be null");
+    }
 
-    if (amount.compareTo(BigDecimal.ZERO) < 0) {
-      throw new JSepaException("Payment amount must be greater than zero");
+    if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new JSepaValidationException("'amount' should be greater than 0");
     }
 
     this.amount = amount.setScale(2, RoundingMode.HALF_UP);
@@ -54,19 +56,23 @@ public class SepaTransferPaymentBuilder {
     return this;
   }
 
-  public SepaTransferPaymentBuilder withPayee(AccountIdentification identification) {
-    Objects.requireNonNull(identification);
+  public SepaTransferPaymentBuilder withPayee(AccountIdentification payee) {
+    if (Objects.isNull(payee)) {
+      throw new JSepaValidationException("'payee' cannot be null");
+    }
 
-    this.payee = identification;
+    this.payee = payee;
 
     return this;
   }
 
   public SepaTransferPaymentBuilder withReasonForPayment(String reasonForPayment) {
-    Objects.requireNonNull(reasonForPayment);
+    if (Objects.isNull(reasonForPayment)) {
+      throw new JSepaValidationException("'reasonForPayment' cannot be null");
+    }
 
-    if (reasonForPayment.trim().isEmpty()) {
-      throw new JSepaException("ReasonForPayment cannot be empty");
+    if (reasonForPayment.isBlank()) {
+      throw new JSepaValidationException("'reasonForPayment' cannot be empty");
     }
 
     this.reasonForPayment = JSepaContentSanitizer.of(reasonForPayment).sanitize();
@@ -75,10 +81,12 @@ public class SepaTransferPaymentBuilder {
   }
 
   public SepaTransferPaymentBuilder withEndToEndId(String endToEndId) {
-    Objects.requireNonNull(endToEndId);
+    if (Objects.isNull(endToEndId)) {
+      throw new JSepaValidationException("'endToEndId' cannot be null");
+    }
 
-    if (endToEndId.trim().isEmpty()) {
-      throw new JSepaException("EndToEndId cannot be empty");
+    if (endToEndId.isBlank()) {
+      throw new JSepaValidationException("'endToEndId' cannot be empty");
     }
 
     this.endToEndId = endToEndId;

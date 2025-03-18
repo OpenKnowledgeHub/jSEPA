@@ -80,6 +80,11 @@
                             </FinInstnId>
                         </CdtrAgt>
                         <DrctDbtTxInf>
+                            <PmtId>
+                                <EndToEndId>
+                                    <xsl:value-of select="Mandate/Identification"/>
+                                </EndToEndId>
+                            </PmtId>
                             <PmtTpInf>
                                 <SvcLvl>
                                     <Cd>CORE</Cd>
@@ -88,14 +93,9 @@
                                     <Cd>CORE</Cd>
                                 </LclInstrm>
                                 <SeqTp>
-                                    <xsl:value-of select="Mandate/Type/Code"/>
+                                    <xsl:value-of select="Mandate/Type"/>
                                 </SeqTp>
                             </PmtTpInf>
-                            <PmtId>
-                                <EndToEndId>
-                                    <xsl:value-of select="Mandate/MandateId"/>
-                                </EndToEndId>
-                            </PmtId>
                             <InstdAmt Ccy="">
                                 <xsl:attribute name="Ccy">
                                     <xsl:value-of select="Currency"/>
@@ -143,11 +143,13 @@
                                     </IBAN>
                                 </Id>
                             </DbtrAcct>
-                            <RmtInf>
-                                <Ustrd>
-                                    <xsl:value-of select="ReasonForPayment"/>
-                                </Ustrd>
-                            </RmtInf>
+                            <xsl:if test="ReasonForPayment">
+                                <RmtInf>
+                                    <Ustrd>
+                                        <xsl:value-of select="ReasonForPayment"/>
+                                    </Ustrd>
+                                </RmtInf>
+                            </xsl:if>
                         </DrctDbtTxInf>
                     </PmtInf>
                 </xsl:for-each>

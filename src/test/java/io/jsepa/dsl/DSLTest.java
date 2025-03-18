@@ -23,13 +23,24 @@
 package io.jsepa.dsl;
 
 import static io.jsepa.api.assertions.JSepaAssertions.jSepaAssertThat;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.BIC;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.IBAN;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.IDENTIFICATION;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.NAME;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.SPANISH_BIC;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.SPANISH_IBAN;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.SPANISH_IDENTIFICATION;
+import static io.jsepa.api.objects.AccountIdentificationTestProvider.SPANISH_NAME;
+import static io.jsepa.api.objects.DirectDebitTestProvider.DirectDebitPaymentTestProvider.DUE_AT;
+import static io.jsepa.api.objects.MandateTestProvider.ISSUED_AT;
+import static io.jsepa.api.objects.MandateTestProvider.MANDATE_ID;
+import static io.jsepa.api.objects.SepaTransferTestProvider.DATE_OF_EXECUTION;
+import static io.jsepa.api.objects.SepaTransferTestProvider.MESSAGE_ID;
+import static io.jsepa.api.objects.SepaTransferTestProvider.SepaTransferPaymentTestProvider.AMOUNT;
+import static io.jsepa.api.objects.SepaTransferTestProvider.SepaTransferPaymentTestProvider.END_TO_END_ID;
+import static io.jsepa.api.objects.SepaTransferTestProvider.SepaTransferPaymentTestProvider.REASON_FOR_PAYMENT;
 
-import io.jsepa.api.objects.AccountIdentificationTestProvider;
-import io.jsepa.api.objects.MandateTestProvider;
-import io.jsepa.data.common.AccountIdentification;
-import io.jsepa.data.directdebit.Mandate;
 import io.jsepa.data.directdebit.MandateType;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -44,104 +55,225 @@ class DSLTest {
     @Test
     @DisplayName("Should create first usage Mandate")
     void testMandateCreationFirstUsage() {
-      final Mandate createdMandate =
-          DSL.firstUseOfMandate(MandateTestProvider.MANDATE_ID)
-              .issuedAt(MandateTestProvider.ISSUED_AT)
-              .get();
+      final var createdMandate = DSL.firstUseOfMandate(MANDATE_ID).issuedAt(ISSUED_AT).get();
 
       jSepaAssertThat(createdMandate)
           .isNotNull()
-          .hasMandateId(MandateTestProvider.MANDATE_ID)
+          .hasMandateId(MANDATE_ID)
           .isFromType(MandateType.FIRST)
-          .wasIssuedAt(MandateTestProvider.ISSUED_AT);
+          .wasIssuedAt(ISSUED_AT);
     }
 
     @Test
     @DisplayName("Should create last usage Mandate")
     void testMandateCreationLastUsage() {
-      final Mandate createdMandate =
-          DSL.lastUseOfMandate(MandateTestProvider.MANDATE_ID)
-              .issuedAt(MandateTestProvider.ISSUED_AT)
-              .get();
+      final var createdMandate = DSL.lastUseOfMandate(MANDATE_ID).issuedAt(ISSUED_AT).get();
 
       jSepaAssertThat(createdMandate)
           .isNotNull()
-          .hasMandateId(MandateTestProvider.MANDATE_ID)
+          .hasMandateId(MANDATE_ID)
           .isFromType(MandateType.FINAL)
-          .wasIssuedAt(MandateTestProvider.ISSUED_AT);
+          .wasIssuedAt(ISSUED_AT);
     }
 
     @Test
     @DisplayName("Should create one time Mandate")
     void testMandateCreationOneTimeUsage() {
-      final Mandate createdMandate =
-          DSL.oneTimeMandate(MandateTestProvider.MANDATE_ID)
-              .issuedAt(MandateTestProvider.ISSUED_AT)
-              .get();
+      final var createdMandate = DSL.oneTimeMandate(MANDATE_ID).issuedAt(ISSUED_AT).get();
 
       jSepaAssertThat(createdMandate)
           .isNotNull()
-          .hasMandateId(MandateTestProvider.MANDATE_ID)
+          .hasMandateId(MANDATE_ID)
           .isFromType(MandateType.ONE_OFF)
-          .wasIssuedAt(MandateTestProvider.ISSUED_AT);
+          .wasIssuedAt(ISSUED_AT);
     }
 
     @Test
     @DisplayName("Should create recurrent Mandate")
     void testMandateCreationRecurrentUsage() {
-      final Mandate createdMandate =
-          DSL.recurrentMandate(MandateTestProvider.MANDATE_ID)
-              .issuedAt(MandateTestProvider.ISSUED_AT)
-              .get();
+      final var createdMandate = DSL.recurrentMandate(MANDATE_ID).issuedAt(ISSUED_AT).get();
 
       jSepaAssertThat(createdMandate)
           .isNotNull()
-          .hasMandateId(MandateTestProvider.MANDATE_ID)
+          .hasMandateId(MANDATE_ID)
           .isFromType(MandateType.RECURRING)
-          .wasIssuedAt(MandateTestProvider.ISSUED_AT);
+          .wasIssuedAt(ISSUED_AT);
     }
   }
 
   @Nested
   @DisplayName("Test DSL for AccountIdentifier")
-  public class TestAccountIdentifier {
+  class TestAccountIdentifier {
 
     @Test
     @DisplayName("Should create a valid SepaIdentification")
-    public void testCreateAccountIdentifier() {
-
-      DSL.transfer("MessageId")
-          .from(
-              DSL.account()
-                  .name("Payer Name")
-                  .identification("Payer Identification")
-                  .bic("BYLADEM1001")
-                  .iban("DE02120300000000202051"))
-          .on(LocalDateTime.now().plusWeeks(1))
-          .to(
-              DSL.account()
-                  .name("Payee Name")
-                  .identification("Payee Identification")
-                  .bic("BYLADEM1001")
-                  .iban("DE02120300000000203051"))
-          .amount(125)
-          .withEndToEndIdentifier("End to end identification")
-          .toXml();
-
-      final AccountIdentification createdIdentification =
-          DSL.account()
-              .name(AccountIdentificationTestProvider.NAME)
-              .identification(AccountIdentificationTestProvider.IDENTIFICATION)
-              .bic(AccountIdentificationTestProvider.BIC)
-              .iban(AccountIdentificationTestProvider.IBAN)
-              .get();
+    void testCreateAccountIdentifier() {
+      final var createdIdentification =
+          DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN).get();
 
       jSepaAssertThat(createdIdentification)
           .isNotNull()
-          .hasIdentifier(AccountIdentificationTestProvider.IDENTIFICATION)
-          .hasName(AccountIdentificationTestProvider.NAME)
-          .hasBic(AccountIdentificationTestProvider.BIC)
-          .hasIban(AccountIdentificationTestProvider.IBAN);
+          .hasIdentifier(IDENTIFICATION)
+          .hasName(NAME)
+          .hasBic(BIC)
+          .hasIban(IBAN);
+    }
+  }
+
+  @Nested
+  @DisplayName("Test DSL for transfer documents")
+  class TestTransferDocument {
+
+    @Test
+    @DisplayName("Should create a valid transfer document")
+    void testValidTransferDocument() {
+      final var createdXml =
+          DSL.transfer(MESSAGE_ID)
+              .from(DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN))
+              .on(DATE_OF_EXECUTION)
+              .to(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .amount(AMOUNT.doubleValue())
+              .withEndToEndIdentifier(END_TO_END_ID)
+              .withReasonForPayment(REASON_FOR_PAYMENT)
+              .toXml();
+
+      jSepaAssertThat(createdXml).isNotNull().isNotBlank().isInAValidTransferShape();
+    }
+
+    @Test
+    @DisplayName("Should create a valid transfer document without reason for payment")
+    void testValidTransferDocumentWithoutReasonForPayment() {
+      final var createdXml =
+          DSL.transfer(MESSAGE_ID)
+              .from(DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN))
+              .on(DATE_OF_EXECUTION)
+              .to(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .amount(AMOUNT.doubleValue())
+              .withEndToEndIdentifier(END_TO_END_ID)
+              .toXml();
+
+      jSepaAssertThat(createdXml).isNotNull().isNotBlank().isInAValidTransferShape();
+    }
+
+    @Test
+    @DisplayName("Should create a valid transfer document with multiple payments")
+    void testValidTransferDocumentWithMultiplePayments() {
+      final var createdXml =
+          DSL.transfer(MESSAGE_ID)
+              .from(DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN))
+              .on(DATE_OF_EXECUTION)
+              .to(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .amount(AMOUNT.doubleValue())
+              .withEndToEndIdentifier(END_TO_END_ID)
+              .withReasonForPayment(REASON_FOR_PAYMENT)
+              .and()
+              .to(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .amount(AMOUNT.doubleValue())
+              .withEndToEndIdentifier(END_TO_END_ID)
+              .toXml();
+
+      jSepaAssertThat(createdXml).isNotNull().isNotBlank().isInAValidTransferShape();
+    }
+  }
+
+  @Nested
+  @DisplayName("Test DSL for direct debit documents")
+  class TestDirectDebitDocument {
+
+    @Test
+    @DisplayName("Should create a valid direct debit document")
+    void testValidDirectDebitDocument() {
+      final var createdXml =
+          DSL.directDebit(MESSAGE_ID)
+              .creditor(DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN))
+              .receive(AMOUNT.doubleValue())
+              .from(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .on(DUE_AT)
+              .withPaymentIdentification("PAYMENT_IDENTIFICATION")
+              .overMandate(DSL.firstUseOfMandate(MANDATE_ID).issuedAt(ISSUED_AT))
+              .withReasonForPayment(REASON_FOR_PAYMENT)
+              .toXml();
+
+      jSepaAssertThat(createdXml).isNotNull().isNotBlank().isInAValidDirectDebitShape();
+    }
+
+    @Test
+    @DisplayName("Should create a valid direct debit document without reason for payment")
+    void testValidDirectDebitDocumentWithoutReasonForPayment() {
+      final var createdXml =
+          DSL.directDebit(MESSAGE_ID)
+              .creditor(DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN))
+              .receive(AMOUNT.doubleValue())
+              .from(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .on(DUE_AT)
+              .withPaymentIdentification("PAYMENT_IDENTIFICATION")
+              .overMandate(DSL.firstUseOfMandate(MANDATE_ID).issuedAt(ISSUED_AT))
+              .toXml();
+
+      jSepaAssertThat(createdXml).isNotNull().isNotBlank().isInAValidDirectDebitShape();
+    }
+
+    @Test
+    @DisplayName("Should create a valid direct debit document with multiple payments")
+    void testValidDirectDebitDocumentWithMultiplePayments() {
+      final var createdXml =
+          DSL.directDebit(MESSAGE_ID)
+              .creditor(DSL.account().name(NAME).identification(IDENTIFICATION).bic(BIC).iban(IBAN))
+              .receive(AMOUNT.doubleValue())
+              .from(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .on(DUE_AT)
+              .withPaymentIdentification("PAYMENT_IDENTIFICATION")
+              .overMandate(DSL.firstUseOfMandate(MANDATE_ID).issuedAt(ISSUED_AT))
+              .and()
+              .receive(AMOUNT.doubleValue())
+              .from(
+                  DSL.account()
+                      .name(SPANISH_NAME)
+                      .identification(SPANISH_IDENTIFICATION)
+                      .bic(SPANISH_BIC)
+                      .iban(SPANISH_IBAN))
+              .on(DUE_AT)
+              .withPaymentIdentification("PAYMENT_IDENTIFICATION")
+              .overMandate(DSL.lastUseOfMandate(MANDATE_ID).issuedAt(ISSUED_AT))
+              .withReasonForPayment(REASON_FOR_PAYMENT)
+              .toXml();
+
+      jSepaAssertThat(createdXml).isNotNull().isNotBlank().isInAValidDirectDebitShape();
     }
   }
 }

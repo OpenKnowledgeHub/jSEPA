@@ -25,7 +25,6 @@ package io.jsepa.data.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,9 +34,6 @@ class LocalDateAdapterTest {
 
   private final LocalDate testDate = LocalDate.of(2020, 1, 1);
   private final String testDateString = "2020-01-01";
-
-  private final LocalDateTime testDateTime = LocalDateTime.of(2020, 1, 1, 10, 5, 0);
-  private final String testDateTimeString = "2020-01-01T10:05:0";
 
   LocalDateAdapter underTest;
 
@@ -49,7 +45,7 @@ class LocalDateAdapterTest {
   @Test
   @DisplayName("Should marshal a LocalDate")
   void testMarshalLocalDate() {
-    final String marshalledDate = underTest.marshal(testDate);
+    final var marshalledDate = underTest.marshal(testDate);
 
     assertThat(marshalledDate).isNotNull().isNotBlank().isEqualTo(testDateString);
   }
@@ -57,7 +53,7 @@ class LocalDateAdapterTest {
   @Test
   @DisplayName("Should marshal null without failing")
   void testMarshalLocalDateNull() {
-    final String marshalledDate = underTest.marshal(null);
+    final var marshalledDate = underTest.marshal(null);
 
     assertThat(marshalledDate).isNull();
   }
@@ -65,7 +61,7 @@ class LocalDateAdapterTest {
   @Test
   @DisplayName("Should unmarshal a LocalDate")
   void testUnmarshalLocalDate() {
-    final LocalDate unmarshalledDate = underTest.unmarshal(testDateString);
+    final var unmarshalledDate = underTest.unmarshal(testDateString);
 
     assertThat(unmarshalledDate).isNotNull().isEqualTo(testDate);
   }
@@ -73,7 +69,7 @@ class LocalDateAdapterTest {
   @Test
   @DisplayName("Should unmarshal null without failing")
   void testUnmarshalLocalDateNull() {
-    final LocalDate unmarshalledDate = underTest.unmarshal(null);
+    final var unmarshalledDate = underTest.unmarshal(null);
 
     assertThat(unmarshalledDate).isNull();
   }

@@ -22,6 +22,9 @@
 
 package io.jsepa.api.assertions;
 
+import static io.jsepa.api.objects.MandateTestProvider.ISSUED_AT;
+import static io.jsepa.api.objects.MandateTestProvider.MANDATE_ID;
+import static io.jsepa.api.objects.MandateTestProvider.MANDATE_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.jsepa.data.directdebit.Mandate;
@@ -34,20 +37,36 @@ public class MandateAssert extends AbstractAssert<MandateAssert, Mandate> {
     super(mandate, MandateAssert.class);
   }
 
-  public MandateAssert hasMandateId(String actualMandateId) {
-    assertThat(actualMandateId).isEqualTo(actual.getMandateId());
+  public MandateAssert isEmpty() {
+    assertThat(actual.getMandateId()).isNull();
+    assertThat(actual.getMandateIssuedAt()).isNull();
+    assertThat(actual.getMandateType()).isNull();
 
     return this;
   }
 
-  public MandateAssert isFromType(MandateType actualType) {
-    assertThat(actualType).isEqualTo(actual.getMandateType());
+  public MandateAssert hasDefaultTestValues() {
+    assertThat(actual.getMandateId()).isEqualTo(MANDATE_ID);
+    assertThat(actual.getMandateIssuedAt()).isEqualTo(ISSUED_AT);
+    assertThat(actual.getMandateType()).isEqualTo(MANDATE_TYPE);
 
     return this;
   }
 
-  public MandateAssert wasIssuedAt(LocalDate actualIssuedAt) {
-    assertThat(actualIssuedAt).isEqualTo(actual.getMandateIssuedAt());
+  public MandateAssert hasMandateId(String expectedMandateId) {
+    assertThat(actual.getMandateId()).isEqualTo(expectedMandateId);
+
+    return this;
+  }
+
+  public MandateAssert isFromType(MandateType expectedType) {
+    assertThat(actual.getMandateType()).isEqualTo(expectedType);
+
+    return this;
+  }
+
+  public MandateAssert wasIssuedAt(LocalDate expectedIssuedAt) {
+    assertThat(actual.getMandateIssuedAt()).isEqualTo(expectedIssuedAt);
 
     return this;
   }

@@ -23,8 +23,11 @@
 package io.jsepa.api.assertions;
 
 import io.jsepa.data.common.AccountIdentification;
+import io.jsepa.data.directdebit.DirectDebitDocumentData;
 import io.jsepa.data.directdebit.DirectDebitPayment;
 import io.jsepa.data.directdebit.Mandate;
+import io.jsepa.data.transfer.SepaTransferDocumentData;
+import io.jsepa.data.transfer.SepaTransferPayment;
 
 public class JSepaAssertions {
   private JSepaAssertions() {}
@@ -40,5 +43,22 @@ public class JSepaAssertions {
 
   public static DirectDebitPaymentAssert jSepaAssertThat(DirectDebitPayment directDebitPayment) {
     return new DirectDebitPaymentAssert(directDebitPayment);
+  }
+
+  public static SepaTransferAssert jSepaAssertThat(SepaTransferDocumentData transferDocumentData) {
+    return new SepaTransferAssert(transferDocumentData);
+  }
+
+  public static SepaTransferPaymentAssert jSepaAssertThat(SepaTransferPayment sepaTransferPayment) {
+    return new SepaTransferPaymentAssert(sepaTransferPayment);
+  }
+
+  public static DirectDebitDocumentDataAssert jSepaAssertThat(
+      DirectDebitDocumentData directDebitDocumentData) {
+    return new DirectDebitDocumentDataAssert(directDebitDocumentData);
+  }
+
+  public static XmlAssert jSepaAssertThat(String xmlContent) {
+    return new XmlAssert(xmlContent);
   }
 }

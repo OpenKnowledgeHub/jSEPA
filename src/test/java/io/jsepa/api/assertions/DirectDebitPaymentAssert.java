@@ -51,38 +51,49 @@ public class DirectDebitPaymentAssert
     return this;
   }
 
+  public DirectDebitPaymentAssert isEmpty() {
+    assertThat(actual.getIdentification()).isNull();
+    assertThat(actual.getAmount()).isNull();
+    assertThat(actual.getAmount()).isNull();
+    assertThat(actual.getReasonForPayment()).isNull();
+    assertThat(actual.getCurrency()).isNull();
+    assertThat(actual.getMandate()).isNull();
+
+    return this;
+  }
+
   public DirectDebitPaymentAssert hasIdentification(String expectedIdentification) {
-    assertThat(actual.getIdentification()).isNotNull().isEqualTo(expectedIdentification);
+    assertThat(actual.getIdentification()).isEqualTo(expectedIdentification);
 
     return this;
   }
 
   public DirectDebitPaymentAssert hasAmount(BigDecimal expectedAmount) {
-    assertThat(actual.getAmount()).isNotNull().isEqualTo(expectedAmount);
+    assertThat(actual.getAmount()).isEqualTo(expectedAmount);
 
     return this;
   }
 
   public DirectDebitPaymentAssert hasDebitor(AccountIdentification expectedAccountIdentification) {
-    assertThat(actual.getDebitor()).isNotNull().isEqualTo(expectedAccountIdentification);
+    assertThat(actual.getDebitor()).isEqualTo(expectedAccountIdentification);
 
     return this;
   }
 
   public DirectDebitPaymentAssert hasReasonForPayment(String reasonForPayment) {
-    assertThat(actual.getReasonForPayment()).isNotNull().isEqualTo(reasonForPayment);
+    assertThat(actual.getReasonForPayment()).isEqualTo(reasonForPayment);
 
     return this;
   }
 
   public DirectDebitPaymentAssert hasDueAt(LocalDate expectedDueAt) {
-    assertThat(actual.getDirectDebitDueAt()).isNotNull().isEqualTo(expectedDueAt);
+    assertThat(actual.getDirectDebitDueAt()).isEqualTo(expectedDueAt);
 
     return this;
   }
 
   public DirectDebitPaymentAssert hasMandate(Mandate expectedMandate) {
-    assertThat(actual.getMandate()).isNotNull().isEqualTo(expectedMandate);
+    assertThat(actual.getMandate()).isEqualTo(expectedMandate);
 
     return this;
   }

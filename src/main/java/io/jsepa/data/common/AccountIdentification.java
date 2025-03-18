@@ -51,19 +51,19 @@ public class AccountIdentification implements AccountIdentificationSelect {
 
   public AccountIdentification(String name, String identifier, String bic, String iban) {
     if (Objects.isNull(name)) {
-      throw new JSepaValidationException("AccountIdentifier 'name' should not be null");
+      throw new JSepaValidationException("AccountIdentifier 'name' cannot be null");
     }
 
     if (Objects.isNull(identifier)) {
-      throw new JSepaValidationException("AccountIdentifier 'identifier' should not be null");
+      throw new JSepaValidationException("AccountIdentifier 'identifier' cannot be null");
     }
 
     if (Objects.isNull(bic)) {
-      throw new JSepaValidationException("AccountIdentifier 'bic' should not be null");
+      throw new JSepaValidationException("AccountIdentifier 'bic' cannot be null");
     }
 
     if (Objects.isNull(iban)) {
-      throw new JSepaValidationException("AccountIdentifier 'iban' should not be null");
+      throw new JSepaValidationException("AccountIdentifier 'iban' cannot be null");
     }
 
     this.name = name;
