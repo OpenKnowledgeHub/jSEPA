@@ -1,5 +1,6 @@
 package org.openknowledgehub.transformer.sepa;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openknowledgehub.api.assertions.JSepaAssertions.jSepaAssertThat;
 import static org.openknowledgehub.api.objects.DirectDebitTestProvider.MESSAGE_IDENTIFICATION;
 
@@ -43,5 +44,18 @@ class DirectDebitTransformerTest {
     final var transformedXml = underTest.transform(directDebitDocumentData);
 
     jSepaAssertThat(transformedXml).contains("<SvcLvl>").contains("<Cd>SEPA</Cd>");
+  }
+
+  @Test
+  @DisplayName("Should transform using pain.008.001.02 template")
+  void testTransformPain00800102() {
+    final var transformedXml =
+        new DirectDebitTransformer(DirectDebitTransformer.Version.PAIN_008_001_02)
+            .transform(TestObjects.directDebit().document().defaultDocument());
+
+    assertThat(transformedXml)
+        .contains("urn:iso:std:iso:20022:tech:xsd:pain.008.001.02")
+        .contains("<BIC>")
+        .doesNotContain("<BICFI>");
   }
 }
