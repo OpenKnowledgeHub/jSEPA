@@ -22,12 +22,22 @@
 
 package org.openknowledgehub.transformer.sepa;
 
+import java.util.Objects;
+
 import org.openknowledgehub.data.directdebit.DirectDebitDocumentData;
 
 public final class DirectDebitTransformer
     extends AbstractJSepaTransformer<DirectDebitDocumentData> {
 
-  private static final String XSLT_PAIN_008_001_11 = "/transform/transform_pain.008.001.11.xslt";
+  private final String xsltFileName;
+
+  public DirectDebitTransformer() {
+    this(Version.PAIN_008_001_11);
+  }
+
+  public DirectDebitTransformer(Version version) {
+    this.xsltFileName = Objects.requireNonNull(version, "version").xsltFileName;
+  }
 
   @Override
   protected Class<DirectDebitDocumentData> getSepaDocumentType() {
@@ -36,6 +46,17 @@ public final class DirectDebitTransformer
 
   @Override
   protected String getXsltFileName() {
-    return XSLT_PAIN_008_001_11;
+    return xsltFileName;
+  }
+
+  public enum Version {
+    PAIN_008_001_11("/transform/transform_pain.008.001.11.xslt"),
+    PAIN_008_001_02("/transform/transform_pain.008.001.02.xslt");
+
+    private final String xsltFileName;
+
+    Version(String xsltFileName) {
+      this.xsltFileName = xsltFileName;
+    }
   }
 }
