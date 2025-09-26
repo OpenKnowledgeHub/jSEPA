@@ -54,7 +54,8 @@ class DirectDebitDocumentDataTest {
     jSepaAssertThat(createdDirectDebitDocumentData)
         .isNotNull()
         .hasMessageId(MESSAGE_IDENTIFICATION)
-        .hasCreationTimeCloseToNow();
+        .hasCreationTimeCloseToNow()
+        .hasServiceLevel(DirectDebitDocumentData.DEFAULT_SERVICE_LEVEL);
 
     jSepaAssertThat(createdDirectDebitDocumentData.getCreditor())
         .isNotNull()
@@ -73,6 +74,21 @@ class DirectDebitDocumentDataTest {
     final var createdDirectDebitDocumentData = new DirectDebitDocumentData();
 
     jSepaAssertThat(createdDirectDebitDocumentData).isNotNull().isEmpty();
+  }
+
+  @Test
+  @DisplayName("Should create a DirectDebitDocumentData with custom service level")
+  void testCreateWithCustomServiceLevel() {
+    final var createdDirectDebitDocumentData =
+        new DirectDebitDocumentData(
+            MESSAGE_IDENTIFICATION,
+            accountIdentification().defaultAccount(),
+            Collections.singletonList(directDebit().payment().defaultPayment()),
+            "sepa");
+
+    jSepaAssertThat(createdDirectDebitDocumentData)
+        .isNotNull()
+        .hasServiceLevel("SEPA");
   }
 
   @ParameterizedTest
@@ -107,5 +123,33 @@ class DirectDebitDocumentDataTest {
             accountIdentification().defaultAccount(),
             null,
             "DirectDebitDocumentData 'payments' cannot be null"));
+  }
+
+  @Test
+  @DisplayName("Should not allow null service level")
+  void testCreateWithNullServiceLevel() {
+    assertThatThrownBy(
+            () ->
+                new DirectDebitDocumentData(
+                    MESSAGE_IDENTIFICATION,
+                    accountIdentification().defaultAccount(),
+                    Collections.singletonList(directDebit().payment().defaultPayment()),
+                    null))
+        .isInstanceOf(JSepaValidationException.class)
+        .hasMessage("DirectDebitDocumentData 'serviceLevel' cannot be null");
+  }
+
+  @Test
+  @DisplayName("Should not allow empty service level")
+  void testCreateWithEmptyServiceLevel() {
+    assertThatThrownBy(
+            () ->
+                new DirectDebitDocumentData(
+                    MESSAGE_IDENTIFICATION,
+                    accountIdentification().defaultAccount(),
+                    Collections.singletonList(directDebit().payment().defaultPayment()),
+                    "   "))
+        .isInstanceOf(JSepaValidationException.class)
+        .hasMessage("DirectDebitDocumentData 'serviceLevel' cannot be empty");
   }
 }

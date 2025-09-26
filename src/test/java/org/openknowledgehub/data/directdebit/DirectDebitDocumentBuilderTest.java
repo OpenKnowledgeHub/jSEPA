@@ -61,6 +61,9 @@ class DirectDebitDocumentBuilderTest {
     jSepaAssertThat(createdDirectDebitDocumentData.getPayments().get(0))
         .isNotNull()
         .hasDefaultTestValues();
+
+    assertThat(createdDirectDebitDocumentData.getServiceLevel())
+        .isEqualTo(DirectDebitDocumentData.DEFAULT_SERVICE_LEVEL);
   }
 
   @Test
@@ -97,5 +100,38 @@ class DirectDebitDocumentBuilderTest {
     assertThatThrownBy(() -> builder.addPayment(null))
         .isInstanceOf(JSepaValidationException.class)
         .hasMessage("'paymentBuilder' cannot be null");
+  }
+
+  @Test
+  @DisplayName("Should allow to customize the service level")
+  void testCreateWithCustomServiceLevel() {
+    final var createdDirectDebitDocumentData =
+        DirectDebitDocumentBuilder.create(MESSAGE_IDENTIFICATION)
+            .withCreditor(accountIdentification().defaultAccount())
+            .withServiceLevel("SEPA")
+            .addPayment(directDebit().payment().defaultBuilder())
+            .build();
+
+    assertThat(createdDirectDebitDocumentData.getServiceLevel()).isEqualTo("SEPA");
+  }
+
+  @Test
+  @DisplayName("Should not allow null service level")
+  void testCreateWithNullServiceLevel() {
+    DirectDebitDocumentBuilder builder = DirectDebitDocumentBuilder.create(MESSAGE_IDENTIFICATION);
+
+    assertThatThrownBy(() -> builder.withServiceLevel(null))
+        .isInstanceOf(JSepaValidationException.class)
+        .hasMessage("'serviceLevel' cannot be null");
+  }
+
+  @Test
+  @DisplayName("Should not allow empty service level")
+  void testCreateWithEmptyServiceLevel() {
+    DirectDebitDocumentBuilder builder = DirectDebitDocumentBuilder.create(MESSAGE_IDENTIFICATION);
+
+    assertThatThrownBy(() -> builder.withServiceLevel("   "))
+        .isInstanceOf(JSepaValidationException.class)
+        .hasMessage("'serviceLevel' cannot be empty");
   }
 }

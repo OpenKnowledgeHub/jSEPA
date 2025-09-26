@@ -26,6 +26,7 @@ import org.openknowledgehub.data.SepaXmlDocument;
 import org.openknowledgehub.data.common.AccountIdentification;
 import org.openknowledgehub.data.configuration.LocalDateTimeAdapter;
 import org.openknowledgehub.exception.JSepaValidationException;
+import org.openknowledgehub.util.JSepaContentSanitizer;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -57,6 +58,11 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
   @XmlElement(name = "Payment")
   private final List<DirectDebitPayment> payments;
 
+  @XmlElement(name = "ServiceLevel")
+  private final String serviceLevel;
+
+  static final String DEFAULT_SERVICE_LEVEL = "CORE";
+
   /** Default constructor for JAX-B only. You should no used programmatically */
   public DirectDebitDocumentData() {
     this.creationTime = null;
@@ -64,10 +70,19 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
     this.creditor = null;
     this.payments = null;
     this.paymentMethod = null;
+    this.serviceLevel = null;
   }
 
   public DirectDebitDocumentData(
       String messageId, AccountIdentification creditor, List<DirectDebitPayment> payments) {
+    this(messageId, creditor, payments, DEFAULT_SERVICE_LEVEL);
+  }
+
+  public DirectDebitDocumentData(
+      String messageId,
+      AccountIdentification creditor,
+      List<DirectDebitPayment> payments,
+      String serviceLevel) {
 
     if (Objects.isNull(messageId)) {
       throw new JSepaValidationException("DirectDebitDocumentData 'messageId' cannot be null");
@@ -81,11 +96,23 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
       throw new JSepaValidationException("DirectDebitDocumentData 'payments' cannot be null");
     }
 
+    if (Objects.isNull(serviceLevel)) {
+      throw new JSepaValidationException("DirectDebitDocumentData 'serviceLevel' cannot be null");
+    }
+
+    String sanitizedServiceLevel =
+        JSepaContentSanitizer.of(serviceLevel).withMaxLength(4).sanitize().toUpperCase();
+
+    if (sanitizedServiceLevel.isBlank()) {
+      throw new JSepaValidationException("DirectDebitDocumentData 'serviceLevel' cannot be empty");
+    }
+
     this.creationTime = LocalDateTime.now();
     this.messageId = messageId;
     this.creditor = creditor;
     this.payments = payments;
     this.paymentMethod = "DD";
+    this.serviceLevel = sanitizedServiceLevel;
   }
 
   public LocalDateTime getCreationTime() {
@@ -108,6 +135,10 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
     return paymentMethod;
   }
 
+  public String getServiceLevel() {
+    return serviceLevel;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
@@ -116,12 +147,13 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
         && Objects.equals(paymentMethod, that.paymentMethod)
         && Objects.equals(messageId, that.messageId)
         && Objects.equals(creditor, that.creditor)
-        && Objects.equals(payments, that.payments);
+        && Objects.equals(payments, that.payments)
+        && Objects.equals(serviceLevel, that.serviceLevel);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(creationTime, paymentMethod, messageId, creditor, payments);
+    return Objects.hash(creationTime, paymentMethod, messageId, creditor, payments, serviceLevel);
   }
 
   @Override
@@ -131,6 +163,9 @@ public class DirectDebitDocumentData implements SepaXmlDocument {
         + creationTime
         + ", messageId='"
         + messageId
+        + '\''
+        + ", serviceLevel='"
+        + serviceLevel
         + '\''
         + '}';
   }

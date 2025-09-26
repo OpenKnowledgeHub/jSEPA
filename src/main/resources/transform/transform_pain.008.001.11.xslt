@@ -87,7 +87,9 @@
                             </PmtId>
                             <PmtTpInf>
                                 <SvcLvl>
-                                    <Cd>CORE</Cd>
+                                    <Cd>
+                                        <xsl:value-of select="/DirectDebitDocumentData/ServiceLevel"/>
+                                    </Cd>
                                 </SvcLvl>
                                 <LclInstrm>
                                     <Cd>CORE</Cd>

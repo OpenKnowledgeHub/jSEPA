@@ -37,6 +37,8 @@ public class DirectDebitDocumentBuilder {
 
   private List<DirectDebitPayment> payments;
 
+  private String serviceLevel = DirectDebitDocumentData.DEFAULT_SERVICE_LEVEL;
+
   private DirectDebitDocumentBuilder() {}
 
   public static DirectDebitDocumentBuilder create(String messageId) {
@@ -78,7 +80,21 @@ public class DirectDebitDocumentBuilder {
     return this;
   }
 
+  public DirectDebitDocumentBuilder withServiceLevel(String serviceLevel) {
+    if (Objects.isNull(serviceLevel)) {
+      throw new JSepaValidationException("'serviceLevel' cannot be null");
+    }
+
+    if (serviceLevel.isBlank()) {
+      throw new JSepaValidationException("'serviceLevel' cannot be empty");
+    }
+
+    this.serviceLevel = serviceLevel;
+
+    return this;
+  }
+
   public DirectDebitDocumentData build() {
-    return new DirectDebitDocumentData(messageId, creditor, payments);
+    return new DirectDebitDocumentData(messageId, creditor, payments, serviceLevel);
   }
 }
