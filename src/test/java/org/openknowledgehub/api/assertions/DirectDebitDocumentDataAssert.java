@@ -20,6 +20,7 @@ public class DirectDebitDocumentDataAssert
     assertThat(actual.getCreditor()).isNull();
     assertThat(actual.getPayments()).isNull();
     assertThat(actual.getPaymentMethod()).isNull();
+    assertThat(actual.getServiceLevel()).isNull();
 
     return this;
   }
@@ -33,6 +34,12 @@ public class DirectDebitDocumentDataAssert
   public DirectDebitDocumentDataAssert hasCreationTimeCloseToNow() {
     assertThat(actual.getCreationTime())
         .isCloseTo(LocalDateTime.now(), new TemporalUnitWithinOffset(500, ChronoUnit.MILLIS));
+
+    return this;
+  }
+
+  public DirectDebitDocumentDataAssert hasServiceLevel(String expectedServiceLevel) {
+    assertThat(actual.getServiceLevel()).isEqualTo(expectedServiceLevel);
 
     return this;
   }
