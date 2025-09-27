@@ -49,55 +49,77 @@
                         </Nm>
                     </InitgPty>
                 </GrpHdr>
-                <xsl:for-each select="/DirectDebitDocumentData/Payments/Payment">
-                    <PmtInf>
-                        <PmtInfId>
-                            <xsl:value-of select="Identification"/>
-                        </PmtInfId>
-                        <PmtMtd>
-                            <xsl:value-of select="/DirectDebitDocumentData/PaymentMethod"/>
-                        </PmtMtd>
-                        <ReqdColltnDt>
-                            <xsl:value-of select="DirectDebitDueAt"/>
-                        </ReqdColltnDt>
-                        <Cdtr>
-                            <Nm>
-                                <xsl:value-of select="/DirectDebitDocumentData/Creditor/Name"/>
-                            </Nm>
-                        </Cdtr>
-                        <CdtrAcct>
-                            <Id>
-                                <IBAN>
-                                    <xsl:value-of select="/DirectDebitDocumentData/Creditor/Iban"/>
-                                </IBAN>
-                            </Id>
-                        </CdtrAcct>
-                        <CdtrAgt>
-                            <FinInstnId>
-                                <BIC>
-                                    <xsl:value-of select="/DirectDebitDocumentData/Creditor/Bic"/>
-                                </BIC>
-                            </FinInstnId>
-                        </CdtrAgt>
+                <PmtInf>
+                    <PmtInfId>
+                        <xsl:value-of select="/DirectDebitDocumentData/MessageId"/>
+                    </PmtInfId>
+                    <PmtMtd>
+                        <xsl:value-of select="/DirectDebitDocumentData/PaymentMethod"/>
+                    </PmtMtd>
+                    <BtchBookg>true</BtchBookg>
+                    <NbOfTxs>
+                        <xsl:value-of select="count(/DirectDebitDocumentData/Payments/Payment)"/>
+                    </NbOfTxs>
+                    <CtrlSum>
+                        <xsl:value-of select="sum(/DirectDebitDocumentData/Payments/Payment/Amount)"/>
+                    </CtrlSum>
+                    <PmtTpInf>
+                        <SvcLvl>
+                            <Cd>
+                                <xsl:value-of select="/DirectDebitDocumentData/ServiceLevel"/>
+                            </Cd>
+                        </SvcLvl>
+                        <LclInstrm>
+                            <Cd>CORE</Cd>
+                        </LclInstrm>
+                        <SeqTp>
+                            <xsl:value-of select="/DirectDebitDocumentData/Payments/Payment[1]/Mandate/Type"/>
+                        </SeqTp>
+                    </PmtTpInf>
+                    <ReqdColltnDt>
+                        <xsl:value-of select="/DirectDebitDocumentData/Payments/Payment[1]/DirectDebitDueAt"/>
+                    </ReqdColltnDt>
+                    <Cdtr>
+                        <Nm>
+                            <xsl:value-of select="/DirectDebitDocumentData/Creditor/Name"/>
+                        </Nm>
+                    </Cdtr>
+                    <CdtrAcct>
+                        <Id>
+                            <IBAN>
+                                <xsl:value-of select="/DirectDebitDocumentData/Creditor/Iban"/>
+                            </IBAN>
+                        </Id>
+                    </CdtrAcct>
+                    <CdtrAgt>
+                        <FinInstnId>
+                            <BIC>
+                                <xsl:value-of select="/DirectDebitDocumentData/Creditor/Bic"/>
+                            </BIC>
+                        </FinInstnId>
+                    </CdtrAgt>
+                    <ChrgBr>SLEV</ChrgBr>
+                    <CdtrSchmeId>
+                        <Id>
+                            <PrvtId>
+                                <Othr>
+                                    <Id>
+                                        <xsl:value-of select="/DirectDebitDocumentData/Creditor/Identifier"/>
+                                    </Id>
+                                    <SchmeNm>
+                                        <Prtry>SEPA</Prtry>
+                                    </SchmeNm>
+                                </Othr>
+                            </PrvtId>
+                        </Id>
+                    </CdtrSchmeId>
+                    <xsl:for-each select="/DirectDebitDocumentData/Payments/Payment">
                         <DrctDbtTxInf>
                             <PmtId>
                                 <EndToEndId>
                                     <xsl:value-of select="Mandate/Identification"/>
                                 </EndToEndId>
                             </PmtId>
-                            <PmtTpInf>
-                                <SvcLvl>
-                                    <Cd>
-                                        <xsl:value-of select="/DirectDebitDocumentData/ServiceLevel"/>
-                                    </Cd>
-                                </SvcLvl>
-                                <LclInstrm>
-                                    <Cd>CORE</Cd>
-                                </LclInstrm>
-                                <SeqTp>
-                                    <xsl:value-of select="Mandate/Type"/>
-                                </SeqTp>
-                            </PmtTpInf>
                             <InstdAmt Ccy="">
                                 <xsl:attribute name="Ccy">
                                     <xsl:value-of select="Currency"/>
@@ -113,17 +135,6 @@
                                         <xsl:value-of select="Mandate/IssuedAt"/>
                                     </DtOfSgntr>
                                 </MndtRltdInf>
-                                <CdtrSchmeId>
-                                    <Id>
-                                        <PrvtId>
-                                            <Othr>
-                                                <Id>
-                                                    <xsl:value-of select="/DirectDebitDocumentData/Creditor/Identifier"/>
-                                                </Id>
-                                            </Othr>
-                                        </PrvtId>
-                                    </Id>
-                                </CdtrSchmeId>
                             </DrctDbtTx>
                             <DbtrAgt>
                                 <FinInstnId>
@@ -152,8 +163,8 @@
                                 </RmtInf>
                             </xsl:if>
                         </DrctDbtTxInf>
-                    </PmtInf>
-                </xsl:for-each>
+                    </xsl:for-each>
+                </PmtInf>
             </CstmrDrctDbtInitn>
         </Document>
     </xsl:template>
