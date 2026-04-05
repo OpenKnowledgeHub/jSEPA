@@ -22,20 +22,19 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - id: install-secret-key
-        name: Install gpg secret key
+      - name: Import GPG Key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
         run: |
-          # Install gpg secret key
-          cat <(echo -e "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}") | gpg --batch --import
-          # Verify gpg secret key
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
+          gpg --list-keys --keyid-format LONG
       - name: Package jSEPA
         run: |
           mvn \
             --batch-mode \
-            -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} \
             -Psign \
-            clean package
+            clean verify
       - name: Upload artefacts
         uses: actions/upload-artifact@v4
         if: success()
