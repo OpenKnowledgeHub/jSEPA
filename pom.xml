@@ -26,7 +26,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.openknowledgehub</groupId>
     <artifactId>jsepa</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -65,12 +65,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
-        <jakarta.jaxb.version>4.0.2</jakarta.jaxb.version>
-        <junit.version>5.12.0-M1</junit.version>
-        <assertj.version>3.27.3</assertj.version>
+        <jakarta.jaxb.version>4.0.5</jakarta.jaxb.version>
+        <junit.version>5.14.3</junit.version>
+        <assertj.version>3.27.7</assertj.version>
         <sonar.maven.plugin.version>5.0.0.4389</sonar.maven.plugin.version>
         <jacoco.plugin.version>0.8.12</jacoco.plugin.version>
-        <commons.validator.version>1.9.0</commons.validator.version>
+        <commons.validator.version>1.10.1</commons.validator.version>
         <maven.gpg.plugin.version>3.2.7</maven.gpg.plugin.version>
         <central.publishing.maven.plugin.version>0.7.0</central.publishing.maven.plugin.version>
         <maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
