@@ -197,6 +197,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <keyname>${env.MAVEN_GPG_KEYNAME}</keyname>
                             <gpgArguments>
                                 <arg>--pinentry-mode</arg>
                                 <arg>loopback</arg>
