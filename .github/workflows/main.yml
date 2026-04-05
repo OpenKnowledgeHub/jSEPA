@@ -61,51 +61,10 @@ jobs:
           name: jSEPA-compile
           path: ./target/
       - name: Verify jSEPA with coverage
-        run: mvn --batch-mode -Psonar verify
+        run: mvn --batch-mode verify
       - name: Upload artefacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: jSEPA-verify
-          path: "./target/*"
-
-  report-sonar:
-    needs: verify-with-coverage
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Java environment
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Download artefacts
-        uses: actions/download-artifact@v4
-        with:
-          name: jSEPA-verify
-          path: ./target/
-      - name: Report to SonarCloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn --batch-mode -Psonar sonar:sonar
-      - name: Upload artefacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: jSEPA-sonar
           path: "./target/*"
